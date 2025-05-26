@@ -1,0 +1,1 @@
+export { PostUser } from './user.types';

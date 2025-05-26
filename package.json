@@ -10,11 +10,12 @@
   "dependencies": {
     "@prisma/client": "^6.6.0",
     "@types/bcrypt": "^5.0.2",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "module-alias": "^2.2.3",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
