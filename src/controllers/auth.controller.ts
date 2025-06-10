@@ -1,5 +1,7 @@
 import { compare } from 'bcryptjs';
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+
 import userService from '@/services/user.service';
 
 // POST /register endpoint controller
@@ -16,7 +18,10 @@ const register = async (req: Request, res: Response) => {
                 user: {
                     id: user.id,
                     username: user.username,
-                }
+                },
+                token: jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                    expiresIn: '30d',
+                }),
             });
         } catch (error) {
             res.status(422).json(error);
@@ -45,7 +50,10 @@ const login = async (req: Request, res: Response) => {
                 user: {
                     id: user.id,
                     username: user.username,
-                }
+                },
+                token: jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                    expiresIn: '30d',
+                }),
             });
         } catch (error) {
             res.status(422).json(error);
