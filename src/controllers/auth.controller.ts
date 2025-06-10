@@ -7,19 +7,19 @@ import userService from '@/services/user.service';
 // POST /register endpoint controller
 const register = async (req: Request, res: Response) => {
     try {
-        const userData = req.body.user;
-        const user = await userService.findUser(userData.username);
+        const { credentials } = req.body
+        const user = await userService.findUser(credentials.username);
         if (user) {
             res.status(422).json({ message: 'Username is taken' });
         }
         try {
-            const user = await userService.newUser(userData);
+            const user = await userService.newUser(credentials);
             res.status(201).json({
                 user: {
                     id: user.id,
                     username: user.username,
                 },
-                token: jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                jwt: jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
                     expiresIn: '30d',
                 }),
             });
@@ -34,14 +34,14 @@ const register = async (req: Request, res: Response) => {
 // POST /login endpoint controller
 const login = async (req: Request, res: Response) => {
     try {
-        const userData = req.body.user;
+        const { credentials } = req.body;
         try {
-            const user = await userService.findUser(userData.username);
+            const user = await userService.findUser(credentials.username);
             if (!user) {
                 res.status(401).json({ message: 'Invalid username or password' });
                 return;
             }
-            const isPasswordValid = await compare(userData.password, user.password);
+            const isPasswordValid = await compare(credentials.password, user.password);
             if (!isPasswordValid) {
                 res.status(401).json({ message: 'Invalid username or password' });
                 return;
@@ -51,7 +51,7 @@ const login = async (req: Request, res: Response) => {
                     id: user.id,
                     username: user.username,
                 },
-                token: jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                jwt: jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
                     expiresIn: '30d',
                 }),
             });
