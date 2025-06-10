@@ -2,18 +2,18 @@ import { compare } from 'bcryptjs';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import userService from '@/services/user.service';
+import { createNewUser, findUserByUsername } from '@/services/user.service';
 
 // POST /register endpoint controller
 const register = async (req: Request, res: Response) => {
     try {
         const { credentials } = req.body
-        const user = await userService.findUser(credentials.username);
+        const user = await findUserByUsername(credentials.username);
         if (user) {
             res.status(422).json({ message: 'Username is taken' });
         }
         try {
-            const user = await userService.newUser(credentials);
+            const user = await createNewUser(credentials);
             res.status(201).json({
                 user: {
                     id: user.id,
@@ -36,7 +36,7 @@ const login = async (req: Request, res: Response) => {
     try {
         const { credentials } = req.body;
         try {
-            const user = await userService.findUser(credentials.username);
+            const user = await findUserByUsername(credentials.username);
             if (!user) {
                 res.status(401).json({ message: 'Invalid username or password' });
                 return;
