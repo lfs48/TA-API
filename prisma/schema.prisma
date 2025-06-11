@@ -12,6 +12,24 @@ model User {
   id          String    @id @default(uuid())
   username    String    @unique
   password    String
+
+  gmGames   Game[]    @relation("GM Games")
+  playerGames Game[]   @relation("Player")
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Game {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+
+  gm          User?     @relation("GM Games", fields: [gmID], references: [id])
+  gmID        String
+
+  players     User[]    @relation("Player")
+
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
