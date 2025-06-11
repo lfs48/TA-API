@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 
+import { getJWTSecret } from '@/util/auth.util';
+
 export function authenticator(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1]; //Bearer token
@@ -8,7 +10,8 @@ export function authenticator(req, res, next) {
         return;
     }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    jwt.verify(token, getJWTSecret(), (err, user) => {
+        console.log(user);
         if (err) {
             res.status(403).json({ message: 'Invalid authorization token.' });
             return;

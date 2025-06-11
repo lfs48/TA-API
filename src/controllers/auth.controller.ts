@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { createNewUser, findUserByUsername } from '@/services/user.service';
+import { getJWTSecret } from '@/util/auth.util';
 
 // POST /register endpoint controller
 const register = async (req: Request, res: Response) => {
@@ -19,7 +20,7 @@ const register = async (req: Request, res: Response) => {
                     id: user.id,
                     username: user.username,
                 },
-                jwt: jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                jwt: jwt.sign({ id: user.id }, getJWTSecret(), {
                     expiresIn: '30d',
                 }),
             });
@@ -51,7 +52,7 @@ const login = async (req: Request, res: Response) => {
                     id: user.id,
                     username: user.username,
                 },
-                jwt: jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                jwt: jwt.sign({ id: user.id }, getJWTSecret(), {
                     expiresIn: '30d',
                 }),
             });

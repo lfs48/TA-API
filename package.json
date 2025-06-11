@@ -7,9 +7,13 @@
     "build": "tsc",
     "start": "node dist/server.js"
   },
+  "prisma": {
+    "seed": "ts-node src/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "^6.6.0",
     "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "express": "^5.1.0",
