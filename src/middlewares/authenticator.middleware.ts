@@ -11,7 +11,6 @@ export function authenticator(req, res, next) {
     }
 
     jwt.verify(token, getJWTSecret(), (err, user) => {
-        console.log(user);
         if (err) {
             res.status(403).json({ message: 'Invalid authorization token.' });
             return;
