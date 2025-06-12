@@ -58,7 +58,8 @@ async function main() {
                 where: { username: user.username },
                 update: {},
                 create: {
-                    ...user
+                    username: user.username,
+                    password: await bcrypt.hash(user.password, 10),
                 },
             });
         })
