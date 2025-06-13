@@ -7,5 +7,6 @@ export function whitelistGameFields(game) {
     description: game.description,
     gm: whitelistUserFields(game.gm),
     players: game.players.map(player => whitelistUserFields(player)),
+    createdAt: game.createdAt,
   };
 }

@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { findUserByID } from '@/services/user.service';
 import { findUserGames } from '@/services/game.service';
 import { whitelistUserFields } from '@/util/user.util';
+import { whitelistGameFields } from '@/util/game.util';
 
 // GET /user/:id endpoint controller
 export const getUser = async (req: Request, res: Response) => {
@@ -32,13 +33,7 @@ export const getUserGames = async (req: Request, res: Response) => {
 
         const games = await findUserGames(id);
         res.status(200).json({
-            games: games.map((game) => ({
-                id: game.id,
-                title: game.title,
-                description: game.description,
-                gm: whitelistUserFields(game.gm),
-                players: game.players.map((player) => whitelistUserFields(player)),
-            })),
+            games: games.map((game) => whitelistGameFields(game)),
         });
         return;
     } catch (error) {
