@@ -13,11 +13,13 @@ export const getGame = async (req: Request, res: Response) => {
         if (!passphrase) {
             res.status(400).json({ message: 'Missing passphrase in query string'});
         }
+
         const game = await findGameByPassphrase(passphrase as string);
         if (!game) {
             res.status(404).json({ message: 'Game not found' });
             return;
         }
+        
         const userId = getIdFromJWT(req);
         if (!authenticateParticipation(userId, game)) {
             res.status(403).json({ message: 'Forbidden: You are not in this game.' });
@@ -43,8 +45,15 @@ export const getGameByID = async (req: Request, res: Response) => {
             res.status(404).json({ message: 'User not found' });
             return;
         }
+
+        const userId = getIdFromJWT(req);
+        if (!authenticateParticipation(userId, game)) {
+            res.status(403).json({ message: 'Forbidden: You are not in this game.' });
+            return;
+        }
+
         res.status(200).json({
-            game: whitelistGameFields(game) 
+            game: whitelistGameFields(game),
         });
         return;
     } catch (error) {
