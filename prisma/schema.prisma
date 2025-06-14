@@ -13,7 +13,7 @@ model User {
   username    String    @unique
   password    String
 
-  gmGames   Game[]    @relation("GM Games")
+  gmGames     Game[]    @relation("GM Games")
   playerGames Game[]   @relation("Player")
 
   createdAt   DateTime  @default(now())
@@ -24,6 +24,8 @@ model Game {
   id          String    @id @default(uuid())
   title       String
   description String?
+  active     Boolean   @default(true)
+  passphrase String    @unique
 
   gm          User?     @relation("GM Games", fields: [gmID], references: [id])
   gmID        String

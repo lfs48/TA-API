@@ -30,22 +30,27 @@ const gameData = [
     {
         title: 'Test Game 1',
         description: 'This is a test game.',
+        passphrase: 'stegosaur-untoasted-peroxide-buffed',
     },
         {
         title: 'Test Game 2',
         description: 'This is a test game.',
+        passphrase: 'pushpin-unexpired-afflicted-jaundice',
     },
         {
         title: 'Test Game 3',
         description: 'This is a test game.',
+        passphrase: 'mayflower-partly-condition-conch',
     },
         {
         title: 'Test Game 4',
         description: 'This is a test game.',
+        passphrase: 'prone-tropical-triage-clover',
     },
         {
         title: 'Test Game 5',
         description: 'This is a test game.',
+        passphrase: 'abacus-foil-goatskin-husband',
     },
 ];
 

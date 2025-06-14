@@ -14,6 +14,9 @@ importers:
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
+      '@types/eff-diceware-passphrase':
+        specifier: ^3.0.2
+        version: 3.0.2
       '@types/jsonwebtoken':
         specifier: ^9.0.9
         version: 9.0.9
@@ -23,6 +26,9 @@ importers:
       cors:
         specifier: ^2.8.5
         version: 2.8.5
+      eff-diceware-passphrase:
+        specifier: ^3.0.0
+        version: 3.0.0
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -32,6 +38,9 @@ importers:
       module-alias:
         specifier: ^2.2.3
         version: 2.2.3
+      random-words:
+        specifier: ^2.0.1
+        version: 2.0.1
       socket.io:
         specifier: ^4.8.1
         version: 4.8.1
@@ -278,6 +287,9 @@ packages:
   '@types/cors@2.8.17':
     resolution: {integrity: sha512-8CGDvrBj1zgo2qE+oS3pOCyYNqCPryMWY2bGfwA0dcfopWGgxs+78df0Rs3rc9THP4JkOhLsAa+15VdpAqkcUA==}
 
+  '@types/eff-diceware-passphrase@3.0.2':
+    resolution: {integrity: sha512-4D7fKEEbRiNFVMCEg+jAS4IQ8Af9nJc76xQHEAYIm5BT/UUz3aUXb3OohFuhLNjPdMLGBRuNE72caaGUftoIgw==}
+
   '@types/express-serve-static-core@5.0.6':
     resolution: {integrity: sha512-3xhRnjJPkULekpSzgtoNYYcTWgEZkp4myc+Saevii5JPnHNvHMRlBSHDbs7Bh1iPPoVTERHEZXyhyLbMEsExsA==}
 
@@ -355,6 +367,9 @@ packages:
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
+
+  binary-search-bounds@2.0.5:
+    resolution: {integrity: sha512-H0ea4Fd3lS1+sTEB2TgcLoK21lLhwEJzlQv3IN47pJS976Gx4zoWe0ak3q+uYh60ppQxg9F16Ri4tS1sfD4+jA==}
 
   body-parser@2.2.0:
     resolution: {integrity: sha512-02qvAaxv8tp7fBa/mw1ga98OGm+eCbqzJOKoRt70sLmfEEi+jyBYVTDGfCL/k06/4EMk/z01gCe7HoCH/f2LTg==}
@@ -453,6 +468,9 @@ packages:
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
+
+  eff-diceware-passphrase@3.0.0:
+    resolution: {integrity: sha512-WQwTp2WxQYXn20zS+1yHtoDvAjnlEJDxRxbOKN7hSMJJg18med/TGxSY8z/c5L4XYbJOB9jdL2F4g7pK/RazLA==}
 
   encodeurl@2.0.0:
     resolution: {integrity: sha512-Q0n9HRi4m6JuGIV1eFlmvJB7ZEVxu93IrMyiMsGC0lrMJMWzRgx6WGquyfQgZVb31vhGgXnfmPNNXmxnOkRBrg==}
@@ -675,6 +693,12 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
+  nanoassert@1.1.0:
+    resolution: {integrity: sha512-C40jQ3NzfkP53NsO8kEOFd79p4b9kDXQMwgiY1z8ZwrDZgUyom0AHwGegF4Dm99L+YoYhuaB0ceerUcXmqr1rQ==}
+
+  nanoassert@2.0.0:
+    resolution: {integrity: sha512-7vO7n28+aYO4J+8w96AzhmU8G+Y/xpPDJz/se19ICsqj/momRbb9mh9ZUtkoJ5X3nTnPdhEJyc0qnM6yAsHBaA==}
+
   negotiator@0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
@@ -682,6 +706,10 @@ packages:
   negotiator@1.0.0:
     resolution: {integrity: sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==}
     engines: {node: '>= 0.6'}
+
+  node-gyp-build@4.8.4:
+    resolution: {integrity: sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ==}
+    hasBin: true
 
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
@@ -739,6 +767,12 @@ packages:
     resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
     engines: {node: '>=0.6'}
 
+  random-words@2.0.1:
+    resolution: {integrity: sha512-nZNJAmgcFmtJMTDDIUCm/iK4R6RydC6NvALvWhYItXQrgYGk1F7Gww416LpVROFQtfVd5TaLEf4WuSsko03N7w==}
+
+  randombytes@2.1.0:
+    resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
+
   range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
@@ -770,6 +804,18 @@ packages:
 
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
+
+  secure-random-uniform@4.0.0:
+    resolution: {integrity: sha512-lG3gfPH/3gIxZCzC/phX2Ig4/ixA+9/bGuFEBHCfztB+d9ldUMYKSd7lDM8MrblHkKnqPD+QNAWben3u9tjLbQ==}
+
+  secure-sample@2.0.0:
+    resolution: {integrity: sha512-oN0BKwTirBrnKf8wXMyPQKsemy6zDtQyJkM95Q5S1Mz3Z1jLLzfscEhIKCkbzlk8DehSI2ZQolINYYDiXyPusw==}
+
+  secure-shuffle@2.0.0:
+    resolution: {integrity: sha512-ApCw4REBMAqOyqFRKUyYJXMMnag8lZZ66h56WaHPC2GmEdLht0DhJaPZSgNykyCYrRlGftlK8hAv1E91or15hQ==}
+
+  seedrandom@3.0.5:
+    resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
 
   semver@7.7.2:
     resolution: {integrity: sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==}
@@ -813,6 +859,9 @@ packages:
   socket.io@4.8.1:
     resolution: {integrity: sha512-oZ7iUCxph8WYRHHcjBEc9unw3adt5CmSNlppj/5Q4k2RIrhl8Z5yY2Xr4j9zj0+wzVZ0bxmYoGSzKJnRl6A4yg==}
     engines: {node: '>=10.2.0'}
+
+  sodium-native@3.4.1:
+    resolution: {integrity: sha512-PaNN/roiFWzVVTL6OqjzYct38NSXewdl2wz8SRB51Br/MLIJPrbM3XexhVWkq7D3UWMysfrhKVf1v1phZq6MeQ==}
 
   source-map-support@0.5.21:
     resolution: {integrity: sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==}
@@ -1076,6 +1125,8 @@ snapshots:
     dependencies:
       '@types/node': 22.15.2
 
+  '@types/eff-diceware-passphrase@3.0.2': {}
+
   '@types/express-serve-static-core@5.0.6':
     dependencies:
       '@types/node': 22.15.2
@@ -1153,6 +1204,8 @@ snapshots:
   bcryptjs@3.0.2: {}
 
   binary-extensions@2.3.0: {}
+
+  binary-search-bounds@2.0.5: {}
 
   body-parser@2.2.0:
     dependencies:
@@ -1251,6 +1304,13 @@ snapshots:
       safe-buffer: 5.2.1
 
   ee-first@1.1.1: {}
+
+  eff-diceware-passphrase@3.0.0:
+    dependencies:
+      binary-search-bounds: 2.0.5
+      nanoassert: 2.0.0
+      secure-sample: 2.0.0
+      secure-shuffle: 2.0.0
 
   encodeurl@2.0.0: {}
 
@@ -1525,9 +1585,15 @@ snapshots:
 
   ms@2.1.3: {}
 
+  nanoassert@1.1.0: {}
+
+  nanoassert@2.0.0: {}
+
   negotiator@0.6.3: {}
 
   negotiator@1.0.0: {}
+
+  node-gyp-build@4.8.4: {}
 
   normalize-path@3.0.0: {}
 
@@ -1572,6 +1638,14 @@ snapshots:
     dependencies:
       side-channel: 1.1.0
 
+  random-words@2.0.1:
+    dependencies:
+      seedrandom: 3.0.5
+
+  randombytes@2.1.0:
+    dependencies:
+      safe-buffer: 5.2.1
+
   range-parser@1.2.1: {}
 
   raw-body@3.0.0:
@@ -1608,6 +1682,23 @@ snapshots:
   safe-buffer@5.2.1: {}
 
   safer-buffer@2.1.2: {}
+
+  secure-random-uniform@4.0.0:
+    dependencies:
+      nanoassert: 1.1.0
+      randombytes: 2.1.0
+      sodium-native: 3.4.1
+
+  secure-sample@2.0.0:
+    dependencies:
+      nanoassert: 2.0.0
+      secure-random-uniform: 4.0.0
+
+  secure-shuffle@2.0.0:
+    dependencies:
+      secure-random-uniform: 4.0.0
+
+  seedrandom@3.0.5: {}
 
   semver@7.7.2: {}
 
@@ -1695,6 +1786,10 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
+
+  sodium-native@3.4.1:
+    dependencies:
+      node-gyp-build: 4.8.4
 
   source-map-support@0.5.21:
     dependencies:

@@ -1,7 +1,8 @@
 import { Game } from '@prisma/client';
 import prisma from './index';
+import { GameWithRelations } from 'types';
 
-export const findGameById = async (id) => await prisma.game.findUnique({
+export const findGameById = async (id:string) => await prisma.game.findUnique({
     where: { id },
     include: {
         gm: true,
@@ -9,7 +10,15 @@ export const findGameById = async (id) => await prisma.game.findUnique({
     },
 });
 
-export const findUserGames = async (id) => await prisma.game.findMany({
+export const findGameByPassphrase = async (passphrase:string): Promise<GameWithRelations | null> => await prisma.game.findUnique({
+    where: { passphrase },
+    include: {
+        gm: true,
+        players: true
+    },
+});
+
+export const findUserGames = async (id:string) => await prisma.game.findMany({
     where: {
         OR: [
             { gmID: id },
