@@ -26,7 +26,11 @@ export async function generateGamePhrase() {
   return phrase;
 }
 
-export function authenticateParticipation(id:string, game:GameWithRelations) {
+export function isGm(id:string, game:GameWithRelations) {
+  return id === game.gmID;
+}
+
+export function isParticipant(id:string, game:GameWithRelations) {
   return (id === game.gmID || game.players.some(player => player.id === id));
 }
 

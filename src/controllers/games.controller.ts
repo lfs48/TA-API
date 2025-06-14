@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import { createNewGame, findGameById, findGameByPassphrase } from '@/services/game.service';
-import { authenticateParticipation, generateGamePhrase, whitelistGameFields } from '@/util/game.util';
+import { createNewGame, findGameById, findGameByPassphrase, updateGame } from '@/services/game.service';
+import { isParticipant, generateGamePhrase, whitelistGameFields } from '@/util/game.util';
 import { getIdFromJWT } from '@/util/auth.util';
 import { GameWithRelations } from 'types';
 
@@ -19,9 +19,9 @@ export const getGame = async (req: Request, res: Response) => {
             res.status(404).json({ message: 'Game not found' });
             return;
         }
-        
+
         const userId = getIdFromJWT(req);
-        if (!authenticateParticipation(userId, game)) {
+        if (!isParticipant(userId, game)) {
             res.status(403).json({ message: 'Forbidden: You are not in this game.' });
             return;
         }
@@ -47,7 +47,7 @@ export const getGameByID = async (req: Request, res: Response) => {
         }
 
         const userId = getIdFromJWT(req);
-        if (!authenticateParticipation(userId, game)) {
+        if (!isParticipant(userId, game)) {
             res.status(403).json({ message: 'Forbidden: You are not in this game.' });
             return;
         }
@@ -63,7 +63,7 @@ export const getGameByID = async (req: Request, res: Response) => {
 };
 
 // POST /game endpoint controller
-export const createGame = async (req: Request, res: Response) => {
+export const postGame = async (req: Request, res: Response) => {
     try {
         const id = getIdFromJWT(req);
         const gameData = req.body.game;
@@ -83,8 +83,42 @@ export const createGame = async (req: Request, res: Response) => {
     }
 }
 
+// PATCH /game/:id endpoint controller
+export const patchGame = async (req: Request, res: Response) => {
+    try {
+        const gameId = req.params.id;
+        const userId = getIdFromJWT(req);
+        const gameData = req.body.game;
+        const game = await findGameById(gameId);
+
+        if (!game) {
+            res.status(404).json({ message: 'Game not found.'});
+            return;
+        }
+
+        if (!isParticipant(userId, game)) {
+            res.status(403).json({ message: 'Forbidden: This is not your game.' });
+            return;
+        }
+
+        const updatedGame = await updateGame(
+            gameId,
+            gameData,
+        );
+        res.status(200).json({
+            game: whitelistGameFields(updatedGame),
+        });
+        return;
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Internal Server Error' });
+        return;
+    }
+}
+
 export default {
     getGame,
     getGameByID,
-    createGame,
+    postGame,
+    patchGame,
 };
