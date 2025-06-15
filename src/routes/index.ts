@@ -5,6 +5,7 @@ import { authenticator, logger } from '@/middlewares';
 import authRouter from './auth.routes';
 import userRouter from './user.routes';
 import gameRouter from './game.routes';
+import inviteRouter from './invite.routes';
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.post('/example', exampleController.createExample);
 router.use(authRouter);
 router.use(userRouter);
 router.use(gameRouter);
+router.use(inviteRouter);
 
 export default router;

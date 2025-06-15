@@ -1,0 +1,21 @@
+import { z } from "zod/v4";
+
+import { InviteStatus } from "@/types/invite.types";
+
+export const postInviteValidation = z.object({
+    body: z.object({
+        invite: z.object({
+            inviteeId: z.uuid(),
+            gameId: z.uuid(),
+        }),
+    }),
+});
+
+export const patchInviteValidation = z.object({
+    body: z.object({
+        invite: z.object({
+            status: InviteStatus
+            ,
+        }),
+    }),
+});

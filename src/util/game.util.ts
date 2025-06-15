@@ -3,6 +3,7 @@ import generatePassphrase from 'eff-diceware-passphrase';
 import { whitelistUserFields } from "./user.util";
 import { findGameByPassphrase } from "@/services/game.service";
 import { GameWithRelations } from 'types';
+import { Game } from '@prisma/client';
 
 export function whitelistGameFields(game:GameWithRelations) {
   return {
@@ -13,6 +14,17 @@ export function whitelistGameFields(game:GameWithRelations) {
     active: game.active,
     gm: whitelistUserFields(game.gm),
     players: game.players.map(player => whitelistUserFields(player)),
+    createdAt: game.createdAt,
+  };
+}
+
+export function whitelistGameFieldsWithoutRelations(game:Game | GameWithRelations) {
+  return {
+    id: game.id,
+    title: game.title,
+    description: game.description,
+    passphrase: game.passphrase,
+    active: game.active,
     createdAt: game.createdAt,
   };
 }
