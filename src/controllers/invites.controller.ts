@@ -61,12 +61,9 @@ export const patchInvite = async (req: Request, res: Response) => {
         }
 
         const updatedInvite = await updateInvite(inviteId, inviteData);
-        if (!invite) {
-            res.status(404).json({ message: 'Invite not found' });
-            return;
-        }
-        res.status(200).json({ invite: whitelistInviteFields(invite) });
+        res.status(200).json({ invite: whitelistInviteFields(updatedInvite) });
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
