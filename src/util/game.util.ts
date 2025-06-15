@@ -2,15 +2,15 @@ import generatePassphrase from 'eff-diceware-passphrase';
 
 import { whitelistUserFields } from "./user.util";
 import { findGameByPassphrase } from "@/services/game.service";
-import { Game } from '@prisma/client';
 import { GameWithRelations } from 'types';
 
-export function whitelistGameFields(game) {
+export function whitelistGameFields(game:GameWithRelations) {
   return {
     id: game.id,
     title: game.title,
     description: game.description,
     passphrase: game.passphrase,
+    active: game.active,
     gm: whitelistUserFields(game.gm),
     players: game.players.map(player => whitelistUserFields(player)),
     createdAt: game.createdAt,
