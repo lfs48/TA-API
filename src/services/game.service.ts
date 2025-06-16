@@ -51,3 +51,16 @@ export const updateGame = async (id:string, gameData:Game) => await prisma.game.
         players: true,
     }
 });
+
+export const disconnectPlayerFromGame = async(gameId:string, playerId:string):Promise<GameWithRelations> => await prisma.game.update({
+    where: { id: gameId },
+    data: {
+        players: {
+            disconnect: { id: playerId }
+        }
+    },
+    include: {
+        gm: true,
+        players: true,
+    }
+});

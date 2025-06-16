@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { createNewGame, findGameById, findGameByPassphrase, updateGame } from '@/services/game.service';
+import { createNewGame, disconnectPlayerFromGame, findGameById, findGameByPassphrase, updateGame } from '@/services/game.service';
 import { isParticipant, generateGamePhrase, whitelistGameFields } from '@/util/game.util';
 import { getIdFromJWT } from '@/util/auth.util';
 import { GameWithRelations } from 'types';
@@ -116,9 +116,48 @@ export const patchGame = async (req: Request, res: Response) => {
     }
 }
 
+// PATCH /game/:id/remove-player endpoint controller
+export const removePlayerFromGame = async (req: Request, res: Response) => {
+    try {
+        const gameId = req.params.id;
+        const { playerId } = req.body;
+        const userId = getIdFromJWT(req);
+
+        // Fetch the game with relations
+        const game = await findGameById(gameId);
+        if (!game) {
+            res.status(404).json({ message: 'Game not found.' });
+            return;
+        }
+
+        // Only the GM can remove players
+        if (userId !== game.gmID) {
+            res.status(403).json({ message: 'Forbidden: Only the GM can remove players.' });
+            return;
+        }
+
+        // Check if the player is in the game
+        if (!game.players.some(player => player.id === playerId)) {
+            res.status(404).json({ message: 'Player not found in this game.' });
+            return;
+        }
+
+        // Remove the player from the game
+        const updatedGame = await disconnectPlayerFromGame(gameId, playerId);
+
+        res.status(200).json({
+            game: whitelistGameFields(updatedGame),
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
 export default {
     getGame,
     getGameByID,
     postGame,
     patchGame,
+    removePlayerFromGame,
 };
