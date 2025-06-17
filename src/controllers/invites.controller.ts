@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { findInviteById, createInvite, updateInvite } from '@/services/invite.service';
 import { isInviteParticipant, whitelistInviteFields } from '@/util/invite.util';
 import { getIdFromJWT } from '@/util/auth.util';
+import { findUserByUsername } from '@/services/user.service';
 
 // GET /invite/:id endpoint controller
 export const getInvite = async (req: Request, res: Response) => {
@@ -32,9 +33,16 @@ export const postInvite = async (req: Request, res: Response) => {
     try {
         const inviterId = getIdFromJWT(req);
         const inviteData = req.body.invite;
+        const invitee = await findUserByUsername(inviteData.inviteeUsername);
+
+        if (!invitee) {
+            res.status(404).json({ message: 'User not found'});
+            return;
+        }
         const invite = await createInvite({
             inviterId: inviterId,
-            ...inviteData,
+            inviteeId: invitee.id,
+            gameId: inviteData.gameId,
         });
         res.status(201).json({ invite: whitelistInviteFields(invite) });
     } catch (error) {

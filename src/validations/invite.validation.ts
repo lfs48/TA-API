@@ -5,7 +5,7 @@ import { InviteStatus } from "@/types/invite.types";
 export const postInviteValidation = z.object({
     body: z.object({
         invite: z.object({
-            inviteeId: z.uuid(),
+            inviteeUsername: z.string(),
             gameId: z.uuid(),
         }),
     }),

@@ -1,7 +1,7 @@
 import { Invite } from '@prisma/client';
 
 import prisma from './index';
-import { InviteWithRelations } from '@/types/invite.types';
+import { InviteData, InviteWithRelations } from '@/types/invite.types';
 
 export const findInviteById = async (id: string):Promise<InviteWithRelations | null> => await prisma.invite.findUnique({
     where: { id: id },
@@ -12,7 +12,7 @@ export const findInviteById = async (id: string):Promise<InviteWithRelations | n
     }
 })
 
-export const createInvite = async (inviteData:Invite):Promise<InviteWithRelations> => await prisma.invite.create({
+export const createInvite = async (inviteData:InviteData):Promise<InviteWithRelations> => await prisma.invite.create({
     data: { ...inviteData },
     include: {
         invitee: true,

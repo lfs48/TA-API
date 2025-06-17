@@ -6,10 +6,16 @@ export type InviteWithRelations = Invite & {
     invitee: User;
     inviter: User;
     game: Game;
-}
+};
 
 export const InviteStatus = z.enum([
     'PENDING',
     'ACCEPTED',
     'REJECTED',
-])
+]);
+
+export interface InviteData {
+    inviterId: string;
+    inviteeId: string;
+    gameId: string;
+}
