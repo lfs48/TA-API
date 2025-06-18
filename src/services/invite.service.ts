@@ -30,3 +30,21 @@ export const updateInvite = async (id: string, inviteData:Partial<Invite>): Prom
         game: true,
     }
 });
+
+export const findGameInvites = async(gameId:string): Promise<InviteWithRelations[]> => await prisma.invite.findMany({
+    where: { gameId },
+    include: {
+        invitee: true,
+        inviter: true,
+        game: true,
+    }
+});
+
+export const findReceivedInvites = async(inviteeId:string): Promise<InviteWithRelations[]> => await prisma.invite.findMany({
+    where: { inviteeId },
+    include: {
+        invitee: true,
+        inviter: true,
+        game: true,
+    }
+});

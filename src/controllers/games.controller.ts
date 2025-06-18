@@ -3,7 +3,8 @@ import { Request, Response } from 'express';
 import { createNewGame, disconnectPlayerFromGame, findGameById, findGameByPassphrase, updateGame } from '@/services/game.service';
 import { isParticipant, generateGamePhrase, whitelistGameFields } from '@/util/game.util';
 import { getIdFromJWT } from '@/util/auth.util';
-import { GameWithRelations } from 'types';
+import { findGameInvites } from '@/services/invite.service';
+import { whitelistInviteFields } from '@/util/invite.util';
 
 
 // GET /game endpoint controller
@@ -154,10 +155,32 @@ export const removePlayerFromGame = async (req: Request, res: Response) => {
     }
 };
 
+export const getGameInvites = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const game = await findGameById(id);
+        if (!game) {
+            res.status(404).json({ message: 'Game not found' });
+            return;
+        }
+
+        const invites = await findGameInvites(id);
+        res.status(200).json({
+            invites: invites.map((inv) => whitelistInviteFields(inv)),
+        });
+        return;
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Internal Server Error' });
+        return;
+    }
+};
+
 export default {
     getGame,
     getGameByID,
     postGame,
     patchGame,
     removePlayerFromGame,
+    getGameInvites,
 };

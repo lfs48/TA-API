@@ -11,5 +11,6 @@ gameRouter.get("/game/:id", authenticator, gamesController.getGameByID);
 gameRouter.post("/game", authenticator, validator(postGameValidation), gamesController.postGame);
 gameRouter.patch("/game/:id", authenticator, validator(patchGameValidation), gamesController.patchGame);
 gameRouter.patch("/game/:id/remove-player", authenticator, validator(removePlayerValidation), gamesController.removePlayerFromGame);
+gameRouter.get("/game/:id/invites", authenticator, gamesController.getGameInvites);
 
 export default gameRouter;

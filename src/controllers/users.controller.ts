@@ -4,6 +4,8 @@ import { findUserByID } from '@/services/user.service';
 import { findUserGames } from '@/services/game.service';
 import { whitelistUserFields } from '@/util/user.util';
 import { whitelistGameFields } from '@/util/game.util';
+import { findReceivedInvites } from '@/services/invite.service';
+import { whitelistInviteFields } from '@/util/invite.util';
 
 // GET /user/:id endpoint controller
 export const getUser = async (req: Request, res: Response) => {
@@ -41,9 +43,31 @@ export const getUserGames = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Internal Server Error' });
         return;
     }
-}
+};
+
+export const getUserInvites = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const user = await findUserByID(id);
+        if (!user) {
+            res.status(404).json({ message: 'User not found' });
+            return;
+        }
+
+        const invites = await findReceivedInvites(id);
+        res.status(200).json({
+            invites: invites.map((inv) => whitelistInviteFields(inv)),
+        });
+        return;
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Internal Server Error' });
+        return;
+    }
+};
 
 export default {
     getUser,
-    getUserGames
+    getUserGames,
+    getUserInvites,
 };
