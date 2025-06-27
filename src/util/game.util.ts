@@ -2,30 +2,32 @@ import generatePassphrase from 'eff-diceware-passphrase';
 
 import { whitelistUserFields } from "./user.util";
 import { findGameByPassphrase } from "@/services/game.service";
-import { GameWithRelations } from 'types';
+import { GameWithRelations } from '@/types';
 import { Game } from '@prisma/client';
+import { whitelistInviteFields } from './invite.util';
 
-export function whitelistGameFields(game:GameWithRelations) {
-  return {
+export function whitelistGameFields(
+  game: GameWithRelations | Game,
+  include = true,
+) {
+  const base = {
     id: game.id,
     title: game.title,
     description: game.description,
     passphrase: game.passphrase,
     active: game.active,
-    gm: whitelistUserFields(game.gm),
-    players: game.players.map(player => whitelistUserFields(player)),
     createdAt: game.createdAt,
   };
-}
 
-export function whitelistGameFieldsWithoutRelations(game:Game | GameWithRelations) {
+  if (!include) {
+    return base;
+  }
+
   return {
-    id: game.id,
-    title: game.title,
-    description: game.description,
-    passphrase: game.passphrase,
-    active: game.active,
-    createdAt: game.createdAt,
+    ...base,
+    gm: ('gm' in game && game.gm) ? whitelistUserFields(game.gm) : undefined,
+    players: 'players' in game ? game.players?.map(player => whitelistUserFields(player)) : undefined,
+    invites: 'invites' in game ? game.invites?.map(inv => whitelistInviteFields(inv, false)) : undefined,
   };
 }
 
@@ -43,7 +45,7 @@ export function isGm(id:string, game:GameWithRelations) {
 }
 
 export function isParticipant(id:string, game:GameWithRelations) {
-  return (id === game.gmID || game.players.some(player => player.id === id));
+  return (id === game.gmID || game.players?.some(player => player.id === id));
 }
 
 function _generatePhrase() {

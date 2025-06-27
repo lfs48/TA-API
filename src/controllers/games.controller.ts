@@ -42,6 +42,7 @@ export const getGameByID = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const game = await findGameById(id);
+
         if (!game) {
             res.status(404).json({ message: 'User not found' });
             return;
@@ -54,10 +55,11 @@ export const getGameByID = async (req: Request, res: Response) => {
         }
 
         res.status(200).json({
-            game: whitelistGameFields(game),
+            game: whitelistGameFields(game, true),
         });
         return;
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Internal Server Error' });
         return;
     }
@@ -138,7 +140,7 @@ export const removePlayerFromGame = async (req: Request, res: Response) => {
         }
 
         // Check if the player is in the game
-        if (!game.players.some(player => player.id === playerId)) {
+        if (!game.players || !game.players.some(player => player.id === playerId)) {
             res.status(404).json({ message: 'Player not found in this game.' });
             return;
         }
