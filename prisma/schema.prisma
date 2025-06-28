@@ -22,8 +22,8 @@ model User {
   gmGames     Game[] @relation("GM Games")
   playerGames Game[] @relation("Player")
 
-  invitationsReceived Invite[] @relation("Invitee")
-  invitationsSent     Invite[] @relation("Inviter")
+  invitesReceived Invite[] @relation("Invitee")
+  invitesSent     Invite[] @relation("Inviter")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -41,7 +41,7 @@ model Game {
 
   players User[] @relation("Player")
 
-  invitations Invite[]
+  invites Invite[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

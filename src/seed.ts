@@ -71,18 +71,35 @@ async function main() {
     );
 
     let gmIndex = 0;
+    let playerIndex = 1;
     const games = await Promise.all(
         gameData.map(async (game) => {
             gmIndex = (gmIndex + 1) % users.length;
+            playerIndex = (playerIndex + 1) % users.length;
             return await prisma.game.create({
                 data: {
                     ...game,
                     gmID: users[gmIndex].id,
                     players: {
-                        connect: users.filter((_, index) => index !== gmIndex).map(user => ({ id: user.id })),
+                        connect: {id: users[playerIndex].id}
                     },
                 },
             });
+        })
+    );
+
+    let inviteeIndex = 2;
+    const invites = await Promise.all(
+        games.map(async (game) => {
+            inviteeIndex = (inviteeIndex + 1) % users.length;
+            const invite = await prisma.invite.create({
+                data: {
+                    inviterId: game.gmID,
+                    inviteeId: users[inviteeIndex].id,
+                    gameId: game.id,
+                },
+            });
+            return invite;
         })
     );
 };
