@@ -1,5 +1,3 @@
-import { z } from "zod/v4";
-
 import { Game, Invite, User } from "@prisma/client";
 
 export interface InviteData {
@@ -13,9 +11,3 @@ export type InviteWithRelations = Invite & {
     inviter: User;
     game: Game;
 };
-
-export const InviteStatus = z.enum([
-    'PENDING',
-    'ACCEPTED',
-    'REJECTED',
-]);

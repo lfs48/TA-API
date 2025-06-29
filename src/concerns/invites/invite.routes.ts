@@ -1,8 +1,8 @@
 import express from 'express';
 
 import { authenticator, validator } from '@/middlewares';
-import { patchInviteValidation, postInviteValidation } from '@/validations/invite.validation';
-import invitesController from '@/controllers/invites.controller';
+import { patchInviteValidation, postInviteValidation } from '@/validations';
+import invitesController from './invites.controller';
 
 const inviteRouter = express.Router();
 

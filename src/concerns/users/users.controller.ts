@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 
-import { findUserByID } from '@/services/user.service';
-import { findUserGames } from '@/services/game.service';
-import { whitelistUserFields } from '@/util/user.util';
-import { whitelistGameFields } from '@/util/game.util';
-import { findReceivedInvites } from '@/services/invite.service';
-import { whitelistInviteFields } from '@/util/invite.util';
+import { findUserByID , findUserGames } from '@/services';
+import {
+    whitelistGameFields, 
+    whitelistInviteFields, 
+    whitelistUserFields,
+} from '@/util';
+import { findReceivedInvites } from '@/services';
 
 // GET /user/:id endpoint controller
 export const getUser = async (req: Request, res: Response) => {

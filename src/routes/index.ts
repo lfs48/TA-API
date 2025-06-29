@@ -2,10 +2,10 @@ import { Router } from 'express';
 
 import exampleController from '@/controllers';
 import { authenticator, logger } from '@/middlewares';
-import authRouter from './auth.routes';
-import userRouter from './user.routes';
-import gameRouter from './game.routes';
-import inviteRouter from './invite.routes';
+import authRouter from '@/concerns/auth/auth.routes';
+import userRouter from '@/concerns/users/user.routes';
+import gameRouter from '@/concerns/games/game.routes';
+import inviteRouter from '@/concerns/invites/invite.routes';
 
 const router = Router();
 

@@ -1,7 +1,10 @@
 import express from 'express';
 
-import userController from '@/controllers/users.controller';
-import { authenticator, ensureOwnership } from '@/middlewares';
+import userController from './users.controller';
+import { 
+    authenticator,
+    ensureOwnership 
+} from '@/middlewares';
 
 const userRouter = express.Router();
 

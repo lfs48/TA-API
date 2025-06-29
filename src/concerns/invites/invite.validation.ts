@@ -1,6 +1,10 @@
 import { z } from "zod/v4";
 
-import { InviteStatus } from "@/types/invite.types";
+export const InviteStatus = z.enum([
+    'PENDING',
+    'ACCEPTED',
+    'REJECTED',
+]);
 
 export const postInviteValidation = z.object({
     body: z.object({

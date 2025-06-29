@@ -1,9 +1,16 @@
 import { Request, Response } from 'express';
 
-import { findInviteById, createInvite, updateInvite } from '@/services/invite.service';
-import { isInviteParticipant, whitelistInviteFields } from '@/util/invite.util';
-import { getIdFromJWT } from '@/util/auth.util';
-import { findUserByUsername } from '@/services/user.service';
+import { 
+    findInviteById, 
+    createInvite, 
+    updateInvite,
+    findUserByUsername
+} from '@/services';
+import { 
+    isInviteParticipant,
+    whitelistInviteFields,
+    getIdFromJWT
+} from '@/util';
 
 // GET /invite/:id endpoint controller
 export const getInvite = async (req: Request, res: Response) => {

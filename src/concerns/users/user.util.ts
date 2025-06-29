@@ -1,7 +1,9 @@
 import { User } from "@prisma/client";
-import { whitelistGameFields } from "./game.util";
-import { whitelistInviteFields } from "./invite.util";
-import { UserWithRelations } from "types";
+import { 
+  whitelistGameFields, 
+  whitelistInviteFields,
+} from "@/util";
+import { UserWithRelations } from "@/types";
 
 export function whitelistUserFields(
   user: User | UserWithRelations,

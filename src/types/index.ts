@@ -1,3 +1,8 @@
-export type { GameWithRelations } from './game.types';
-export type { InviteData, InviteWithRelations, InviteStatus } from './invite.types';
-export type { PostUser, UserWithRelations } from './user.types';
+//Game types
+export type * from '@/concerns/games/game.types';
+
+// Invite types
+export type * from '@/concerns/invites/invite.types';
+
+// User types
+export type * from '@/concerns/users/user.types';

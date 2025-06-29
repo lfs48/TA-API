@@ -1,8 +1,15 @@
 import express from 'express';
 
-import gamesController from '@/controllers/games.controller';
-import { authenticator, validator } from '@/middlewares';
-import { patchGameValidation, postGameValidation, removePlayerValidation } from '@/validations/game.validation';
+import gamesController from './games.controller';
+import { 
+    authenticator, 
+    validator 
+} from '@/middlewares';
+import { 
+    patchGameValidation, 
+    postGameValidation, 
+    removePlayerValidation 
+} from './game.validation';
 
 const gameRouter = express.Router();
 

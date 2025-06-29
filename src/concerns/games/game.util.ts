@@ -1,10 +1,11 @@
 import generatePassphrase from 'eff-diceware-passphrase';
 
-import { whitelistUserFields } from "./user.util";
-import { findGameByPassphrase } from "@/services/game.service";
-import { GameWithRelations } from '@/types';
-import { whitelistInviteFields } from './invite.util';
 import { Game } from '@prisma/client';
+import { 
+  whitelistUserFields, 
+  whitelistInviteFields } from "@/util";
+import { findGameByPassphrase } from "@/services";
+import { GameWithRelations } from '@/types';
 
 export function whitelistGameFields(
   game: GameWithRelations | Game,

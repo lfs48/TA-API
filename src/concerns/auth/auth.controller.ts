@@ -2,8 +2,11 @@ import { compare } from 'bcryptjs';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { createNewUser, findUserByUsername } from '@/services/user.service';
-import { getJWTSecret } from '@/util/auth.util';
+import { 
+    createNewUser, 
+    findUserByUsername 
+} from '@/services';
+import { getJWTSecret } from '@/util';
 
 // POST /register endpoint controller
 const register = async (req: Request, res: Response) => {

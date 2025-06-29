@@ -1,11 +1,20 @@
 import { Request, Response } from 'express';
 
-import { createNewGame, disconnectPlayerFromGame, findGameById, findGameByPassphrase, updateGame } from '@/services/game.service';
-import { isParticipant, generateGamePhrase, whitelistGameFields } from '@/util/game.util';
-import { getIdFromJWT } from '@/util/auth.util';
-import { findGameInvites } from '@/services/invite.service';
-import { whitelistInviteFields } from '@/util/invite.util';
-
+import { 
+    createNewGame, 
+    disconnectPlayerFromGame, 
+    findGameById, 
+    findGameByPassphrase, 
+    updateGame,
+    findGameInvites,
+} from '@/services';
+import { 
+    isParticipant, 
+    generateGamePhrase, 
+    whitelistGameFields,
+    getIdFromJWT, 
+    whitelistInviteFields,
+} from '@/util';
 
 // GET /game endpoint controller
 export const getGame = async (req: Request, res: Response) => {

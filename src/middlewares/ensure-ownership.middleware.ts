@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { getJWTSecret } from '@/util/auth.util';
+
+import { getJWTSecret } from '@/util';
 
 /**
  * Middleware to ensure the authenticated user is the owner of the resource.
@@ -16,7 +17,6 @@ export function ensureOwnership(req: Request, res: Response, next: NextFunction)
 
     try {
         const decoded = jwt.verify(token, getJWTSecret()) as { id: string };
-        console.log(decoded)
         if (decoded.id !== req.params.id) {
             res.status(403).json({ message: 'Forbidden: You do not own this resource.' });
             return;
