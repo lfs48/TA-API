@@ -3,12 +3,12 @@ import generatePassphrase from 'eff-diceware-passphrase';
 import { whitelistUserFields } from "./user.util";
 import { findGameByPassphrase } from "@/services/game.service";
 import { GameWithRelations } from '@/types';
-import { Game } from '@prisma/client';
 import { whitelistInviteFields } from './invite.util';
+import { Game } from '@prisma/client';
 
 export function whitelistGameFields(
   game: GameWithRelations | Game,
-  include = true,
+  includeRelations = true,
 ) {
   const base = {
     id: game.id,
@@ -16,18 +16,31 @@ export function whitelistGameFields(
     description: game.description,
     passphrase: game.passphrase,
     active: game.active,
-    createdAt: game.createdAt,
+    gmId: game.gmID,
   };
 
-  if (!include) {
+  if (!includeRelations) {
     return base;
   }
 
   return {
     ...base,
-    gm: ('gm' in game && game.gm) ? whitelistUserFields(game.gm) : undefined,
-    players: 'players' in game ? game.players?.map(player => whitelistUserFields(player)) : undefined,
-    invites: 'invites' in game ? game.invites?.map(inv => whitelistInviteFields(inv, false)) : undefined,
+    ...base,
+    gm: ('gm' in game && game.gm)
+      ? whitelistUserFields(game.gm, false)
+      : undefined,
+    players: ('players' in game && game.players)
+      ? game.players?.map(player => whitelistUserFields(player, false))
+      : undefined,
+    playerIds: ('players' in game && game.players)
+      ? game.players?.map(player => player.id)
+      : undefined,
+    invites: 'invites' in game
+      ? game.invites?.map(inv => whitelistInviteFields(inv, false))
+      : undefined,
+    inviteIds: ('invites' in game && game.invites)
+      ? game.invites?.map(inv => inv.id)
+      : undefined,
   };
 }
 

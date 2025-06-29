@@ -8,13 +8,9 @@ export interface PostGame {
 }
 
 export type GameWithRelations = Game & {
+    playerIds?: string[] | null;
+    inviteIds?: string[] | null;
     gm?: User | null;
     players?: User[] | null;
     invites?: Invite[] | null;
 }
-
-export enum GameRelations {
-    PLAYERS='players',
-    GM='gm',
-    INVITES='invites',
-};
