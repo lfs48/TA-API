@@ -4,7 +4,8 @@ import {
     findInviteById, 
     createInvite, 
     updateInvite,
-    findUserByUsername
+    findUserByUsername,
+    findPendingGameInvite
 } from '@/services';
 import { 
     isInviteParticipant,
@@ -46,6 +47,13 @@ export const postInvite = async (req: Request, res: Response) => {
             res.status(404).json({ message: 'User not found'});
             return;
         }
+
+        const pendingInvite = await findPendingGameInvite(invitee.id, inviteData.gameId);
+        if (pendingInvite) {
+            res.status(409).json({ message: 'User already has a pending invite for this game' });
+            return;
+        }
+
         const invite = await createInvite({
             inviterId: inviterId,
             inviteeId: invitee.id,

@@ -5,6 +5,7 @@ import {
     InviteData, 
     InviteWithRelations 
 } from '@/types';
+import { InviteStatus } from 'validations';
 
 export const findInviteById = async (id: string):Promise<InviteWithRelations | null> => await prisma.invite.findUnique({
     where: { id: id },
@@ -51,3 +52,15 @@ export const findReceivedInvites = async(inviteeId:string): Promise<InviteWithRe
         game: true,
     }
 });
+
+export const findPendingGameInvite = async(inviteeId: string, gameId:string): Promise<Invite | null> => {
+    const invite = await prisma.invite.findFirst({
+        where: {
+            inviteeId: inviteeId,
+            gameId: gameId,
+            status: "PENDING",
+        },
+    });
+
+    return invite;
+}
