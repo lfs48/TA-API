@@ -2,27 +2,20 @@ import { Game } from '@prisma/client';
 import prisma from '@/services';
 import { GameWithRelations } from '@/types';
 
-export const findGameById = async (id:string, includeRelations=true): Promise<GameWithRelations | null> => {
+export const findGameById = async (id:string): Promise<GameWithRelations | null> => {
     const game = await prisma.game.findUnique({
         where: { id },
-        include: {
-            gm: includeRelations,
-            players: includeRelations,
-            invites: includeRelations,
-        },
+        include: allGameRelations
     });
 
     if (!game) return null;
     return game;
 };
 
-export const findGameByPassphrase = async (passphrase:string, includeRelations=true): Promise<GameWithRelations | null> => {
+export const findGameByPassphrase = async (passphrase:string): Promise<GameWithRelations | null> => {
     const game = await prisma.game.findUnique({
         where: { passphrase },
-        include: {
-            gm: includeRelations,
-            players: includeRelations
-        },
+        include: allGameRelations
     });
 
     if (!game) return null;
@@ -37,10 +30,7 @@ export const findUserGames = async (id:string) => {
                 { players: { some: { id } } }
             ]
         },
-        include: {
-            gm: true,
-            players: true,
-        },
+        include: allGameRelations
     });
 
     return games;
@@ -51,10 +41,7 @@ export const createNewGame = async (gameData:Game) => {
         data: {
             ...gameData
         },
-        include: {
-            gm: true,
-            players: true,
-        }
+        include: allGameRelations
     });
 
     return game;
@@ -66,10 +53,7 @@ export const updateGame = async (id:string, gameData:Game) => {
         data: {
             ...gameData
         },
-        include: {
-            gm: true,
-            players: true,
-        }
+        include: allGameRelations
     });
 
     return game;
@@ -83,12 +67,20 @@ export const disconnectPlayerFromGame = async(gameId:string, playerId:string):Pr
                 disconnect: { id: playerId }
             }
         },
-        include: {
-            gm: true,
-            players: true,
-            invites: true,
-        }
+        include: allGameRelations,
     });
 
     return game;
+};
+
+const allGameRelations = {
+  gm: true,
+  players: true,
+  invites: {
+    include: {
+      invitee: true,
+      inviter: true,
+      game: false,
+    }
+  }
 };

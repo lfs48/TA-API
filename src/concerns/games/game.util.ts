@@ -18,6 +18,15 @@ export function whitelistGameFields(
     passphrase: game.passphrase,
     active: game.active,
     gmId: game.gmID,
+    playerIds: ('players' in game && game.players)
+      ? game.players?.map(player => player.id)
+      : undefined,
+    inviteIds: ('invites' in game && game.invites)
+      ? game.invites?.map(inv => inv.id)
+      : undefined,
+    inviteeIds: ('invites' in game && game.invites)
+      ? game.invites?.map(inv => inv.inviteeId)
+      : undefined,
   };
 
   if (!includeRelations) {
@@ -33,14 +42,11 @@ export function whitelistGameFields(
     players: ('players' in game && game.players)
       ? game.players?.map(player => whitelistUserFields(player, false))
       : undefined,
-    playerIds: ('players' in game && game.players)
-      ? game.players?.map(player => player.id)
-      : undefined,
-    invites: 'invites' in game
+    invites: ('invites' in game && game.invites)
       ? game.invites?.map(inv => whitelistInviteFields(inv, false))
       : undefined,
-    inviteIds: ('invites' in game && game.invites)
-      ? game.invites?.map(inv => inv.id)
+    invitees: ('invites' in game && game.invites)
+      ? game.invites?.map(inv => whitelistUserFields(inv.invitee, false))
       : undefined,
   };
 }
