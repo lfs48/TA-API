@@ -5,7 +5,6 @@ import {
     InviteData, 
     InviteWithRelations 
 } from '@/types';
-import { InviteStatus } from 'validations';
 
 export const findInviteById = async (id: string):Promise<InviteWithRelations | null> => await prisma.invite.findUnique({
     where: { id: id },
@@ -25,15 +24,46 @@ export const createInvite = async (inviteData:InviteData):Promise<InviteWithRela
     }
 });
 
-export const updateInvite = async (id: string, inviteData:Partial<Invite>): Promise<InviteWithRelations> => await prisma.invite.update({
-    where: { id: id },
-    data: inviteData,
+export const rejectInvite = async (
+    id: string
+): Promise<InviteWithRelations> => {
+    const invite = await prisma.invite.update({
+        where: { id },
+        data: { status: "REJECTED" },
         include: {
-        invitee: true,
-        inviter: true,
-        game: true,
-    }
-});
+            invitee: true,
+            inviter: true,
+            game: true,
+        },
+    });
+
+    return invite;
+};
+
+export const acceptInvite = async (id: string): Promise<InviteWithRelations> => {
+    return await prisma.$transaction(async (tx) => {
+        const invite = await tx.invite.update({
+            where: { id },
+            data: { status: "ACCEPTED" },
+            include: {
+                invitee: true,
+                inviter: true,
+                game: true,
+            },
+        });
+
+        await tx.game.update({
+            where: { id: invite.gameId },
+            data: {
+                players: {
+                    connect: { id: invite.inviteeId }
+                }
+            }
+        });
+
+        return invite;
+    });
+};
 
 export const findGameInvites = async(gameId:string): Promise<InviteWithRelations[]> => await prisma.invite.findMany({
     where: { gameId },

@@ -3,14 +3,16 @@ import { Request, Response } from 'express';
 import { 
     findInviteById, 
     createInvite, 
-    updateInvite,
+    acceptInvite as acceptInviteService,
+    rejectInvite as rejectInviteService,
     findUserByUsername,
     findPendingGameInvite
 } from '@/services';
 import { 
     isInviteParticipant,
     whitelistInviteFields,
-    getIdFromJWT
+    getIdFromJWT,
+    isInviteInvitee
 } from '@/util';
 
 // GET /invite/:id endpoint controller
@@ -66,24 +68,27 @@ export const postInvite = async (req: Request, res: Response) => {
 };
 
 // PATCH /invite/:id endpoint controller
-export const patchInvite = async (req: Request, res: Response) => {
+export const acceptOrRejectInvite = (accept:boolean) => async (req: Request, res: Response) => {
+    const service = accept ? acceptInviteService : rejectInviteService;
     try {
         const userId = getIdFromJWT(req);
         const inviteId = req.params.id;
-        const inviteData = req.body.invite;
         const invite = await findInviteById(inviteId);
 
         if (!invite) {
             res.status(404).json({ message: 'Invite not found' });
             return;
         }
-
-        if (!isInviteParticipant(userId, invite)) {
+        if (invite.status !== 'PENDING') {
+            res.status(400).json({ message: 'Invite is not pending' });
+            return;
+        }
+        if (!isInviteInvitee(userId, invite)) {
             res.status(403).json({ message: 'Forbidden: Not your invite' });
             return;
         }
 
-        const updatedInvite = await updateInvite(inviteId, inviteData);
+        const updatedInvite = await service(inviteId);
         res.status(200).json({ invite: whitelistInviteFields(updatedInvite) });
     } catch (error) {
         console.log(error)
@@ -94,5 +99,5 @@ export const patchInvite = async (req: Request, res: Response) => {
 export default {
     getInvite,
     postInvite,
-    patchInvite,
+    acceptOrRejectInvite,
 };

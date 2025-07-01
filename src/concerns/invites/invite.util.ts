@@ -39,3 +39,7 @@ export function whitelistInviteFields(
 export function isInviteParticipant(userId: string, invite:InviteWithRelations) {
     return userId === invite.invitee.id || userId === invite.inviter.id;
 }
+
+export function isInviteInvitee(userId: string, invite:InviteWithRelations) {
+    return userId === invite.invitee.id;
+}
