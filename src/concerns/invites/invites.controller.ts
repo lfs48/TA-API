@@ -99,6 +99,15 @@ export const acceptOrRejectInvite = (accept:boolean) => async (req: Request, res
         }
 
         const updatedInvite = await service(inviteId);
+
+        const userSocketMap = ioServer.userSocketMap;
+        const inviterSocketId = userSocketMap.get(invite.inviterId);
+        if (inviterSocketId) {
+            ioServer.to(inviterSocketId).emit(
+                accept ? SocketMessages.GAME_INVITE_ACCEPT : SocketMessages.GAME_INVITE_REJECTED,
+                { invite: whitelistInviteFields(updatedInvite) }
+            );
+        }
         res.status(200).json({ invite: whitelistInviteFields(updatedInvite) });
     } catch (error) {
         console.log(error)
