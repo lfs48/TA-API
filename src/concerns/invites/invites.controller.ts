@@ -14,6 +14,8 @@ import {
     getIdFromJWT,
     isInviteInvitee
 } from '@/util';
+import { ioServer } from '@/server';
+import SocketMessages from '@/sockets/messages.enum';
 
 // GET /invite/:id endpoint controller
 export const getInvite = async (req: Request, res: Response) => {
@@ -61,6 +63,14 @@ export const postInvite = async (req: Request, res: Response) => {
             inviteeId: invitee.id,
             gameId: inviteData.gameId,
         });
+
+        const userSocketMap = ioServer.userSocketMap;
+        const inviteeSocketId = userSocketMap.get(invitee.id);
+        if (inviteeSocketId) {
+            ioServer.to(inviteeSocketId).emit(SocketMessages.GAME_INVITE_SENT, {
+                invite: whitelistInviteFields(invite)
+            });
+        }
         res.status(201).json({ invite: whitelistInviteFields(invite) });
     } catch (error) {
         res.status(500).json({ message: 'Internal Server Error' });

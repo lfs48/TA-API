@@ -15,7 +15,7 @@ app.use([
     router,
 ]);
 const server = createServer(app);
-setupSocketIO(server);
+export const ioServer = setupSocketIO(server);
 
 server.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
