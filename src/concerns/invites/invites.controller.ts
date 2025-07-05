@@ -6,7 +6,8 @@ import {
     acceptInvite as acceptInviteService,
     rejectInvite as rejectInviteService,
     findUserByUsername,
-    findPendingGameInvite
+    findPendingGameInvite,
+    findGameById
 } from '@/services';
 import { 
     isInviteParticipant,
@@ -25,18 +26,18 @@ export const getInvite = async (req: Request, res: Response) => {
         const invite = await findInviteById(inviteId);
 
         if (!invite) {
-            res.status(404).json({ message: 'Invite not found' });
+            res.status(404).json({ messages: ['Invite not found'] });
             return;
         }
 
         if (!isInviteParticipant(userId, invite)) {
-            res.status(403).json({ message: 'Forbidden: Not your invite' });
+            res.status(403).json({ messages: ['Forbidden: Not your invite'] });
             return;
         }
 
         res.status(200).json({ invite: whitelistInviteFields(invite) });
     } catch (error) {
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
     }
 };
 
@@ -48,13 +49,13 @@ export const postInvite = async (req: Request, res: Response) => {
         const invitee = await findUserByUsername(inviteData.inviteeUsername);
 
         if (!invitee) {
-            res.status(404).json({ message: 'User not found'});
+            res.status(404).json({ messages: ['User not found'] });
             return;
         }
 
         const pendingInvite = await findPendingGameInvite(invitee.id, inviteData.gameId);
         if (pendingInvite) {
-            res.status(409).json({ message: 'User already has a pending invite for this game' });
+            res.status(409).json({ messages: ['User already has a pending invite for this game'] });
             return;
         }
 
@@ -73,7 +74,7 @@ export const postInvite = async (req: Request, res: Response) => {
         }
         res.status(201).json({ invite: whitelistInviteFields(invite) });
     } catch (error) {
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
     }
 };
 
@@ -86,15 +87,15 @@ export const acceptOrRejectInvite = (accept:boolean) => async (req: Request, res
         const invite = await findInviteById(inviteId);
 
         if (!invite) {
-            res.status(404).json({ message: 'Invite not found' });
+            res.status(404).json({ messages: ['Invite not found'] });
             return;
         }
         if (invite.status !== 'PENDING') {
-            res.status(400).json({ message: 'Invite is not pending' });
+            res.status(400).json({ messages: ['Invite is not pending'] });
             return;
         }
         if (!isInviteInvitee(userId, invite)) {
-            res.status(403).json({ message: 'Forbidden: Not your invite' });
+            res.status(403).json({ messages: ['Forbidden: Not your invite'] });
             return;
         }
 
@@ -111,7 +112,7 @@ export const acceptOrRejectInvite = (accept:boolean) => async (req: Request, res
         res.status(200).json({ invite: whitelistInviteFields(updatedInvite) });
     } catch (error) {
         console.log(error)
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
     }
 };
 

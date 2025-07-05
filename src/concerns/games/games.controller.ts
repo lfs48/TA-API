@@ -21,18 +21,18 @@ export const getGame = async (req: Request, res: Response) => {
     try {
         const { passphrase } = req.query;
         if (!passphrase) {
-            res.status(400).json({ message: 'Missing passphrase in query string'});
+            res.status(400).json({ messages: ['Missing passphrase in query string'] });
         }
 
         const game = await findGameByPassphrase(passphrase as string);
         if (!game) {
-            res.status(404).json({ message: 'Game not found' });
+            res.status(404).json({ messages: ['Game not found'] });
             return;
         }
 
         const userId = getIdFromJWT(req);
         if (!isParticipant(userId, game)) {
-            res.status(403).json({ message: 'Forbidden: You are not in this game.' });
+            res.status(403).json({ messages: ['Forbidden: You are not in this game.'] });
             return;
         }
 
@@ -41,7 +41,7 @@ export const getGame = async (req: Request, res: Response) => {
         });
         return;
     } catch (error) {
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
         return;
     }
 };
@@ -53,13 +53,13 @@ export const getGameByID = async (req: Request, res: Response) => {
         const game = await findGameById(id);
 
         if (!game) {
-            res.status(404).json({ message: 'User not found' });
+            res.status(404).json({ messages: ['User not found'] });
             return;
         }
 
         const userId = getIdFromJWT(req);
         if (!isParticipant(userId, game)) {
-            res.status(403).json({ message: 'Forbidden: You are not in this game.' });
+            res.status(403).json({ messages: ['Forbidden: You are not in this game.'] });
             return;
         }
 
@@ -69,7 +69,7 @@ export const getGameByID = async (req: Request, res: Response) => {
         return;
     } catch (error) {
         console.log(error)
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
         return;
     }
 };
@@ -90,7 +90,7 @@ export const postGame = async (req: Request, res: Response) => {
         });
         return;
     } catch (error) {
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
         return;
     }
 }
@@ -104,12 +104,12 @@ export const patchGame = async (req: Request, res: Response) => {
         const game = await findGameById(gameId);
 
         if (!game) {
-            res.status(404).json({ message: 'Game not found.'});
+            res.status(404).json({ messages: ['Game not found.'] });
             return;
         }
 
         if (!isParticipant(userId, game)) {
-            res.status(403).json({ message: 'Forbidden: This is not your game.' });
+            res.status(403).json({ messages: ['Forbidden: This is not your game.'] });
             return;
         }
 
@@ -123,7 +123,7 @@ export const patchGame = async (req: Request, res: Response) => {
         return;
     } catch (error) {
         console.log(error)
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
         return;
     }
 }
@@ -138,19 +138,19 @@ export const removePlayerFromGame = async (req: Request, res: Response) => {
         // Fetch the game with relations
         const game = await findGameById(gameId);
         if (!game) {
-            res.status(404).json({ message: 'Game not found.' });
+            res.status(404).json({ messages: ['Game not found.'] });
             return;
         }
 
         // Only the GM can remove players
         if (userId !== game.gmID) {
-            res.status(403).json({ message: 'Forbidden: Only the GM can remove players.' });
+            res.status(403).json({ messages: ['Forbidden: Only the GM can remove players.'] });
             return;
         }
 
         // Check if the player is in the game
         if (!game.players || !game.players.some(player => player.id === playerId)) {
-            res.status(404).json({ message: 'Player not found in this game.' });
+            res.status(404).json({ messages: ['Player not found in this game.'] });
             return;
         }
 
@@ -162,7 +162,7 @@ export const removePlayerFromGame = async (req: Request, res: Response) => {
         });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
     }
 };
 
@@ -171,7 +171,7 @@ export const getGameInvites = async (req: Request, res: Response) => {
         const { id } = req.params;
         const game = await findGameById(id);
         if (!game) {
-            res.status(404).json({ message: 'Game not found' });
+            res.status(404).json({ messages: ['Game not found'] });
             return;
         }
 
@@ -182,7 +182,7 @@ export const getGameInvites = async (req: Request, res: Response) => {
         return;
     } catch (error) {
         console.log(error)
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
         return;
     }
 };

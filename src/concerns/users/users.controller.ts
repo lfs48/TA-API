@@ -14,13 +14,13 @@ export const getUser = async (req: Request, res: Response) => {
         const { id } = req.params;
         const user = await findUserByID(id);
         if (!user) {
-            res.status(404).json({ message: 'User not found' });
+            res.status(404).json({ messages: ['User not found'] });
             return;
         }
         res.status(200).json({ user: whitelistUserFields(user) });
         return;
     } catch (error) {
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
         return;
     }
 };
@@ -30,7 +30,7 @@ export const getUserGames = async (req: Request, res: Response) => {
         const { id } = req.params;
         const user = await findUserByID(id);
         if (!user) {
-            res.status(404).json({ message: 'User not found' });
+            res.status(404).json({ messages: ['User not found'] });
             return;
         }
 
@@ -41,7 +41,7 @@ export const getUserGames = async (req: Request, res: Response) => {
         return;
     } catch (error) {
         console.log(error)
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
         return;
     }
 };
@@ -51,7 +51,7 @@ export const getUserInvites = async (req: Request, res: Response) => {
         const { id } = req.params;
         const user = await findUserByID(id);
         if (!user) {
-            res.status(404).json({ message: 'User not found' });
+            res.status(404).json({ messages: ['User not found'] });
             return;
         }
 
@@ -62,7 +62,7 @@ export const getUserInvites = async (req: Request, res: Response) => {
         return;
     } catch (error) {
         console.log(error)
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
         return;
     }
 };

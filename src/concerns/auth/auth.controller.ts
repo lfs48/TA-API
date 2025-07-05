@@ -14,7 +14,7 @@ const register = async (req: Request, res: Response) => {
         const { credentials } = req.body
         const user = await findUserByUsername(credentials.username);
         if (user) {
-            res.status(422).json({ message: 'Username is taken' });
+            res.status(422).json({ messages: ['Username is taken'] });
         }
         try {
             const user = await createNewUser(credentials);
@@ -31,7 +31,7 @@ const register = async (req: Request, res: Response) => {
             res.status(422).json(error);
         }
     } catch (error) {
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
     }
 };
 
@@ -42,12 +42,12 @@ const login = async (req: Request, res: Response) => {
         try {
             const user = await findUserByUsername(credentials.username);
             if (!user) {
-                res.status(401).json({ message: 'Invalid username or password' });
+                res.status(401).json({ messages: ['Invalid username or password'] });
                 return;
             }
             const isPasswordValid = await compare(credentials.password, user.password);
             if (!isPasswordValid) {
-                res.status(401).json({ message: 'Invalid username or password' });
+                res.status(401).json({ messages: ['Invalid username or password'] });
                 return;
             }
             res.status(200).json({
@@ -63,7 +63,7 @@ const login = async (req: Request, res: Response) => {
             res.status(422).json(error);
         }
     } catch (error) {
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ messages: ['Internal Server Error'] });
     }
 };
 
