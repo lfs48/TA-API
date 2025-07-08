@@ -22,6 +22,8 @@ model User {
   gmGames     Game[] @relation("GM Games")
   playerGames Game[] @relation("Player")
 
+  agents Agent[] @relation("Player")
+
   invitesReceived Invite[] @relation("Invitee")
   invitesSent     Invite[] @relation("Inviter")
 
@@ -43,6 +45,8 @@ model Game {
 
   invites Invite[]
 
+  agents Agent[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -63,4 +67,15 @@ model Invite {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Agent {
+  id String @id @default(uuid())
+  name String @default("")
+
+  game   Game   @relation(fields: [gameId], references: [id])
+  gameId String
+
+  player User @relation("Player", fields: [playerId], references: [id])
+  playerId String
 }
