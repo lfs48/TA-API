@@ -1,5 +1,5 @@
 import { Game, Invite, User } from '@prisma/client';
-import { InviteWithRelations } from 'types';
+import { AgentWithRelations, InviteWithRelations } from 'types';
 
 export interface PostGame {
     game: {
@@ -14,4 +14,5 @@ export type GameWithRelations = Game & {
     gm?: User | null;
     players?: User[] | null;
     invites?: InviteWithRelations[] | null;
+    agents?: AgentWithRelations[] | null;
 }
