@@ -4,6 +4,9 @@ const prisma = new PrismaClient();
 
 export default prisma;
 
+// Agent services
+export * from "@/concerns/agents/agent.service";
+
 // Game services
 export * from "@/concerns/games/game.service";
 

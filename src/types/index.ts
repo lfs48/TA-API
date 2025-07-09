@@ -1,3 +1,6 @@
+//Agent types
+export type * from '@/concerns/agents/agent.types';
+
 //Game types
 export type * from '@/concerns/games/game.types';
 

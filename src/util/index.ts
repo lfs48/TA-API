@@ -1,6 +1,9 @@
 // Auth utils
 export * from "@/concerns/auth/auth.util";
 
+// Agent utils
+export * from "@/concerns/agents/agent.util";
+
 // Game utils
 export * from "@/concerns/games/game.util";
 
