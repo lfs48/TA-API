@@ -76,8 +76,10 @@ async function main() {
         gameData.map(async (game) => {
             gmIndex = (gmIndex + 1) % users.length;
             playerIndex = (playerIndex + 1) % users.length;
-            return await prisma.game.create({
-                data: {
+            return await prisma.game.upsert({
+                where: { passphrase: game.passphrase },
+                update: {},
+                create: {
                     ...game,
                     gmID: users[gmIndex].id,
                     players: {
@@ -100,6 +102,27 @@ async function main() {
                 },
             });
             return invite;
+        })
+    );
+
+    const agents = await Promise.all(
+        users.map(async (user) => {
+            const userWithRelations = await prisma.user.findUnique({
+                where: { id: user.id },
+                include: {
+                    playerGames: true,
+                },
+            });
+            if (!userWithRelations || !userWithRelations.playerGames.length) {
+                return;
+            }
+            return await prisma.agent.create({
+                data: {
+                    playerId: user. id,
+                    gameId: userWithRelations.playerGames[0].id,
+                    name: `Agent ${user.username}`,
+                },
+            });
         })
     );
 };
