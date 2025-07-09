@@ -1,5 +1,6 @@
 import { User } from "@prisma/client";
 import { 
+  whitelistAgentFields,
   whitelistGameFields, 
   whitelistInviteFields,
 } from "@/util";
@@ -12,6 +13,9 @@ export function whitelistUserFields(
   const base = {
     id: user.id,
     username: user.username,
+    agentIds: ('agents' in user && user.agents)
+      ? user.agents.map(agent => agent.id)
+      : undefined,
     gameIds: ('games' in user && user.games)
       ? user.games.map(game => game.id)
       : undefined,
@@ -26,6 +30,9 @@ export function whitelistUserFields(
 
   return {
     ...base,
+    agents: ('agents' in user && user.agents)
+      ? user.agents.map(agent => whitelistAgentFields(agent, false))
+      : undefined,
     games: ('games' in user && user.games)
       ? user.games.map(game => whitelistGameFields(game, false))
       : undefined,

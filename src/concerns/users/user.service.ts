@@ -15,11 +15,7 @@ export const findUserByUsername = async (username: string) => {
     where: {
         username: username,
     },
-    include: {
-        gmGames: true,
-        playerGames: true,
-        invitesReceived: true,
-    }
+    include: allUserRelations
     });
 
     if (!user) return null;
@@ -42,11 +38,7 @@ export const findUserByID = async (id: string) => {
     where: {
         id: id,
     },
-    include: {
-        gmGames: true,
-        playerGames: true,
-        invitesReceived: true,
-    }
+    include: allUserRelations
     });
 
     if (!user) return null;
@@ -61,4 +53,11 @@ export const findUserByID = async (id: string) => {
         games: userGames,
         invites: user.invitesReceived,
     };
+};
+
+const allUserRelations = {
+    agents: true,
+    gmGames: true,
+    playerGames: true,
+    invitesReceived: true,
 };

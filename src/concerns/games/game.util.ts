@@ -3,7 +3,8 @@ import generatePassphrase from 'eff-diceware-passphrase';
 import { Game } from '@prisma/client';
 import { 
   whitelistUserFields, 
-  whitelistInviteFields } from "@/util";
+  whitelistInviteFields, 
+  whitelistAgentFields} from "@/util";
 import { findGameByPassphrase } from "@/services";
 import { GameWithRelations } from '@/types';
 
@@ -18,6 +19,9 @@ export function whitelistGameFields(
     passphrase: game.passphrase,
     active: game.active,
     gmId: game.gmID,
+    agentIds: ('agents' in game && game.agents)
+      ? game.agents?.map(agent => agent.id)
+      : undefined,
     playerIds: ('players' in game && game.players)
       ? game.players?.map(player => player.id)
       : undefined,
@@ -47,6 +51,9 @@ export function whitelistGameFields(
       : undefined,
     invitees: ('invites' in game && game.invites)
       ? game.invites?.map(inv => whitelistUserFields(inv.invitee, false))
+      : undefined,
+    agents: ('agents' in game && game.agents)
+      ? game.agents?.map(agent => whitelistAgentFields(agent, false))
       : undefined,
   };
 }
