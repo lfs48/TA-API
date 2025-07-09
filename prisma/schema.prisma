@@ -78,4 +78,7 @@ model Agent {
 
   player User @relation("Player", fields: [playerId], references: [id])
   playerId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
