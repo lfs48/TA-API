@@ -70,15 +70,60 @@ model Invite {
 }
 
 model Agent {
-  id String @id @default(uuid())
+  id   String @id @default(uuid())
   name String @default("")
 
   game   Game   @relation(fields: [gameId], references: [id])
   gameId String
 
-  player User @relation("Player", fields: [playerId], references: [id])
+  player   User   @relation("Player", fields: [playerId], references: [id])
   playerId String
+
+  anomaly   Anomaly? @relation(fields: [anomalyId], references: [id])
+  anomalyId String?
+
+  reality   Reality? @relation(fields: [realityId], references: [id])
+  realityId String?
+
+  competency   Competency? @relation(fields: [competencyId], references: [id])
+  competencyId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Anomaly {
+  id String @id @default(uuid())
+
+  name String @default("")
+
+  Agent     Agent[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+model Reality {
+  id String @id @default(uuid())
+
+  name String @default("")
+
+  Agent     Agent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+model Competency {
+  id String @id @default(uuid())
+
+  name String @default("")
+
+  Agent     Agent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
 }
