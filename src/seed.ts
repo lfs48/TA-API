@@ -5,22 +5,27 @@ const prisma = new PrismaClient();
 
 const userData = [
     {
+        id: 'alice',
         username: 'Alice',
         password: '12345678',
     },
     {
+        id: 'bob',
         username: 'Bob',
         password: '12345678',
     },
     {
+        id: 'charlie',
         username: 'Charlie',
         password: '12345678',
     },
     {
+        id: 'dave',
         username: 'Dave',
         password: '12345678',
     },
     {
+        id: 'eve',
         username: 'Eve',
         password: '12345678',
     },
@@ -28,41 +33,85 @@ const userData = [
 
 const gameData = [
     {
-        title: 'Test Game 1',
+        id: 'alicegame',
+        title: "Alice's Game",
         description: 'This is a test game.',
         passphrase: 'stegosaur-untoasted-peroxide-buffed',
+        gmId: 'Alice',
+        playerIds: ['Bob', 'Charlie'],
     },
-        {
-        title: 'Test Game 2',
+    {
+        id: 'bobgame',
+        title: "Bob's Game",
         description: 'This is a test game.',
         passphrase: 'pushpin-unexpired-afflicted-jaundice',
+        gmId: 'Bob',
+        playerIds: ['Alice', 'Charlie'],
     },
-        {
-        title: 'Test Game 3',
+    {
+        id: 'charliegame',
+        title: "Charlie's Game",
         description: 'This is a test game.',
         passphrase: 'mayflower-partly-condition-conch',
+        gmId: 'Charlie',
+        playerIds: ['Alice', 'Bob'],
     },
-        {
-        title: 'Test Game 4',
+    {
+        id: 'davegame',
+        title: "Dave's Game",
         description: 'This is a test game.',
         passphrase: 'prone-tropical-triage-clover',
+        gmId: 'Dave',
+        playerIds: ['Eve', 'Alice'],
     },
-        {
-        title: 'Test Game 5',
+    {
+        id: 'evegame',
+        title: "Eve's Game",
         description: 'This is a test game.',
         passphrase: 'abacus-foil-goatskin-husband',
+        gmId: 'Eve',
+        playerIds: ['Dave', 'Bob'],
     },
 ];
 
+const inviteData = [
+    {
+        gameId: `alicegame`,
+        inviteeId: 'Bob',
+        inviterId: 'Alice',
+    },
+    {
+        gameId: `bobgame`,
+        inviteeId: 'Charlie',
+        inviterId: 'Bob',
+    },
+    {
+        gameId: `charliegame`,
+        inviteeId: 'Alice',
+        inviterId: 'Charlie',
+    },
+    {
+        gameId: `davegame`,
+        inviteeId: 'Eve',
+        inviterId: 'Dave',
+    },
+    {
+        gameId: `evegame`,
+        inviteeId: 'Bob',
+        inviterId: 'Eve',
+    },
+];
 
 async function main() {
 
-    const users = await Promise.all(
+    // Seed users
+    await Promise.all(
         userData.map(async (user) => {
             return await prisma.user.upsert({
-                where: { username: user.username },
+                where: { id: user.id },
                 update: {},
                 create: {
+                    id: user.id,
                     username: user.username,
                     password: await bcrypt.hash(user.password, 10),
                 },
@@ -70,61 +119,39 @@ async function main() {
         })
     );
 
-    let gmIndex = 0;
-    let playerIndex = 1;
-    const games = await Promise.all(
+    // Seed games
+    await Promise.all(
         gameData.map(async (game) => {
-            gmIndex = (gmIndex + 1) % users.length;
-            playerIndex = (playerIndex + 1) % users.length;
             return await prisma.game.upsert({
-                where: { passphrase: game.passphrase },
+                where: { id: game.id },
                 update: {},
                 create: {
-                    ...game,
-                    gmID: users[gmIndex].id,
+                    id: game.id,
+                    title: game.title,
+                    description: game.description,
+                    passphrase: game.passphrase,
+                    gmID: game.gmId,
                     players: {
-                        connect: {id: users[playerIndex].id}
+                        connect: game.playerIds.map(pid => ({ id: pid })),
                     },
                 },
             });
         })
     );
 
-    let inviteeIndex = 2;
-    const invites = await Promise.all(
-        games.map(async (game) => {
-            inviteeIndex = (inviteeIndex + 1) % users.length;
-            const invite = await prisma.invite.create({
+    // Seed invites
+    await Promise.all(
+        inviteData.map(async (invite) => {
+            await prisma.invite.create({
                 data: {
-                    inviterId: game.gmID,
-                    inviteeId: users[inviteeIndex].id,
-                    gameId: game.id,
-                },
-            });
-            return invite;
-        })
-    );
-
-    const agents = await Promise.all(
-        users.map(async (user) => {
-            const userWithRelations = await prisma.user.findUnique({
-                where: { id: user.id },
-                include: {
-                    playerGames: true,
-                },
-            });
-            if (!userWithRelations || !userWithRelations.playerGames.length) {
-                return;
-            }
-            return await prisma.agent.create({
-                data: {
-                    playerId: user. id,
-                    gameId: userWithRelations.playerGames[0].id,
-                    name: `Agent ${user.username}`,
+                    inviterId: invite.inviterId,
+                    inviteeId: invite.inviteeId,
+                    gameId: invite.gameId,
                 },
             });
         })
     );
+
 };
 
 main()
