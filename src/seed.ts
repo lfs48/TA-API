@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from 'bcryptjs';
+import { id } from "zod/dist/types/v4/locales";
 
 const prisma = new PrismaClient();
 
@@ -37,68 +38,233 @@ const gameData = [
         title: "Alice's Game",
         description: 'This is a test game.',
         passphrase: 'stegosaur-untoasted-peroxide-buffed',
-        gmId: 'Alice',
-        playerIds: ['Bob', 'Charlie'],
+        gmId: 'alice',
+        playerIds: ['bob', 'charlie'],
     },
     {
         id: 'bobgame',
         title: "Bob's Game",
         description: 'This is a test game.',
         passphrase: 'pushpin-unexpired-afflicted-jaundice',
-        gmId: 'Bob',
-        playerIds: ['Alice', 'Charlie'],
+        gmId: 'bob',
+        playerIds: ['alice', 'charlie'],
     },
     {
         id: 'charliegame',
         title: "Charlie's Game",
         description: 'This is a test game.',
         passphrase: 'mayflower-partly-condition-conch',
-        gmId: 'Charlie',
-        playerIds: ['Alice', 'Bob'],
+        gmId: 'charlie',
+        playerIds: ['alice', 'bob'],
     },
     {
         id: 'davegame',
         title: "Dave's Game",
         description: 'This is a test game.',
         passphrase: 'prone-tropical-triage-clover',
-        gmId: 'Dave',
-        playerIds: ['Eve', 'Alice'],
+        gmId: 'dave',
+        playerIds: ['eve', 'alice'],
     },
     {
         id: 'evegame',
         title: "Eve's Game",
         description: 'This is a test game.',
         passphrase: 'abacus-foil-goatskin-husband',
-        gmId: 'Eve',
-        playerIds: ['Dave', 'Bob'],
+        gmId: 'eve',
+        playerIds: ['dave', 'bob'],
     },
 ];
 
 const inviteData = [
     {
         gameId: `alicegame`,
-        inviteeId: 'Bob',
-        inviterId: 'Alice',
+        inviteeId: 'bob',
+        inviterId: 'alice',
     },
     {
         gameId: `bobgame`,
-        inviteeId: 'Charlie',
-        inviterId: 'Bob',
+        inviteeId: 'charlie',
+        inviterId: 'bob',
     },
     {
         gameId: `charliegame`,
-        inviteeId: 'Alice',
-        inviterId: 'Charlie',
+        inviteeId: 'alice',
+        inviterId: 'charlie',
     },
     {
         gameId: `davegame`,
-        inviteeId: 'Eve',
-        inviterId: 'Dave',
+        inviteeId: 'eve',
+        inviterId: 'dave',
     },
     {
         gameId: `evegame`,
-        inviteeId: 'Bob',
-        inviterId: 'Eve',
+        inviteeId: 'bob',
+        inviterId: 'eve',
+    },
+];
+
+const anomalyData = [
+    {
+        id: 'whisper',
+        name: 'Whisper',
+    },
+    {
+        id: 'catalogue',
+        name: 'Catalogue',
+    },
+    {
+        id: 'drain',
+        name: 'Drain',
+    },
+    {
+        id: 'timepiece',
+        name: 'Timepiece',
+    },
+    {
+        id: 'growth',
+        name: 'Growth',
+    },
+    {
+        id: 'gun',
+        name: 'Gun',
+    },
+    {
+        id: 'dream',
+        name: 'Dream',
+    },
+    {
+        id: 'manifold',
+        name: 'Manifold',
+    },
+    {
+        id: 'absence',
+        name: 'Absence',
+    }
+];
+
+const realityData = [
+    {
+        id: 'caretaker',
+        name: 'Caretaker',
+    },
+    {
+        id: 'overbooked',
+        name: 'Overbooked',
+    },
+    {
+        id: 'pursued',
+        name: 'Pursued',
+    },
+    {
+        id: 'star',
+        name: 'Star',
+    },
+    {
+        id: 'struggling',
+        name: 'Struggling',
+    },
+    {
+        id: 'newborn',
+        name: 'Newborn',
+    },
+    {
+        id: 'romantic',
+        name: 'Romantic',
+    },
+    {
+        id: 'backbone',
+        name: 'Backbone',
+    },
+    {
+        id: 'creature',
+        name: 'Creature',
+    }
+];
+
+const competencyData = [
+    {
+        id: 'pr',
+        name: 'PR',
+    },
+    {
+        id: 'rnd',
+        name: 'R&D',
+    },
+    {
+        id: 'barista',
+        name: 'Barista',
+    },
+    {
+        id: 'ceo',
+        name: 'CEO',
+    },
+    {
+        id: 'intern',
+        name: 'Intern',
+    },
+    {
+        id: 'gravedigger',
+        name: 'Gravedigger',
+    },
+    {
+        id: 'reception',
+        name: 'Reception',
+    },
+    {
+        id: 'hotline',
+        name: 'Hotline',
+    },
+    {
+        id: 'clown',
+        name: 'Clown',
+    }
+];
+
+const agentData = [
+    {
+        id: 'agent1',
+        name: 'Agent One',
+        playerId: 'alice',
+        gameId: 'alicegame',
+        anomalyId: 'whisper',
+        realityId: 'caretaker',
+        competencyId: 'reception',
+    },
+    {
+        id: 'agent2',
+        name: 'Agent Two',
+        playerId: 'bob',
+        gameId: 'bobgame',
+        anomalyId: 'catalogue',
+        realityId: 'overbooked',
+        competencyId: 'rnd',
+    },
+    {
+        id: 'agent3',
+        name: 'Agent Three',
+        playerId: 'charlie',
+        gameId: 'charliegame',
+        anomalyId: 'drain',
+        realityId: 'pursued',
+        competencyId: 'barista',
+    },
+    {
+        id: 'agent4',
+        name: 'Agent Four',
+        playerId: 'dave',
+        gameId: 'davegame',
+        anomalyId: 'timepiece',
+        realityId: 'star',
+        competencyId: 'ceo',
+    },
+    {
+        id: 'agent5',
+        name: 'Agent Five',
+        playerId: 'eve',
+        gameId: 'evegame',
+        anomalyId: 'growth',
+        realityId: 'newborn',
+        competencyId: 'gravedigger',
     },
 ];
 
@@ -147,6 +313,59 @@ async function main() {
                     inviterId: invite.inviterId,
                     inviteeId: invite.inviteeId,
                     gameId: invite.gameId,
+                },
+            });
+        })
+    );
+
+    //Seed anomalies
+    await Promise.all(
+        anomalyData.map(async (anomaly) => {
+            await prisma.anomaly.create({
+                data: {
+                    id: anomaly.id,
+                    name: anomaly.name,
+                },
+            });
+        })
+    );
+
+    // Seed realities
+    await Promise.all(
+        realityData.map(async (reality) => {
+            await prisma.reality.create({
+                data: {
+                    id: reality.id,
+                    name: reality.name,
+                },
+            });
+        })
+    );
+
+    // Seed competencies
+    await Promise.all(
+        competencyData.map(async (competency) => {
+            await prisma.competency.create({
+                data: {
+                    id: competency.id,
+                    name: competency.name,
+                },
+            });
+        })
+    );
+
+    //Seed agents
+    await Promise.all(
+        agentData.map(async (agent) => {
+            await prisma.agent.create({
+                data: {
+                    id: agent.id,
+                    name: agent.name,
+                    playerId: agent.playerId,
+                    gameId: agent.gameId,
+                    anomalyId: agent.anomalyId,
+                    realityId: agent.realityId,
+                    competencyId: agent.competencyId,
                 },
             });
         })
