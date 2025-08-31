@@ -10,7 +10,7 @@ export const postInviteValidation = z.object({
     body: z.object({
         invite: z.object({
             inviteeUsername: z.string(),
-            gameId: z.uuid(),
+            gameId: z.string(),
         }),
     }),
 });

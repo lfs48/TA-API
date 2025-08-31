@@ -35,6 +35,6 @@ export const patchGameValidation = z.object({
 
 export const removePlayerValidation = z.object({
     body: z.object({
-        playerId: z.uuid(),
+        playerId: z.string(),
     }),
 });
