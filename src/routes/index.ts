@@ -6,6 +6,7 @@ import userRouter from '@/concerns/users/user.routes';
 import gameRouter from '@/concerns/games/game.routes';
 import inviteRouter from '@/concerns/invites/invite.routes';
 import agentRouter from '@/concerns/agents/agent.routes';
+import arcRouter from '@/concerns/arc/arc.routes';
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.use(userRouter);
 router.use(gameRouter);
 router.use(inviteRouter);
 router.use(agentRouter);
+router.use(arcRouter);
 
 export default router;
