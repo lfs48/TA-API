@@ -28,6 +28,23 @@ export const createAgent = async (agentData: AgentData) => {
   });
 };
 
+// Update an agent by ID
+export const updateAgent = async (id: string, agentData: Partial<AgentData>) => {
+  return await prisma.agent.update({
+    where: { id },
+    data: {
+      ...agentData,
+    },
+    include: {
+      player: true,
+      game: true,
+      anomaly: true,
+      reality: true,
+      competency: true,
+    },
+  });
+};
+
 // Fetch all agents for a user
 export const findUserAgents = async (playerId: string) => {
   return await prisma.agent.findMany({
@@ -46,6 +63,9 @@ export const findGameAgents = async (gameId: string) => {
     include: {
       player: true,
       game: true,
+      anomaly: true,
+      reality: true,
+      competency: true,
     },
   });
 };

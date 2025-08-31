@@ -2,9 +2,14 @@ import { Agent } from "@prisma/client";
 import { whitelistUserFields } from "@/util";
 import { whitelistGameFields } from "@/util";
 import { AgentWithRelations } from "concerns/agents/agent.types";
+import { 
+    whitelistAnomalyFields, 
+    whitelistCompetencyFields, 
+    whitelistRealityFields 
+} from "@/concerns/arc/arc.util";
 
 export function whitelistAgentFields(
-    agent: AgentWithRelations,
+    agent: AgentWithRelations | Agent,
     includeRelations = true,
 ) {
     const base = {
@@ -12,6 +17,9 @@ export function whitelistAgentFields(
         name: agent.name,
         playerId: agent.playerId,
         gameId: agent.gameId,
+        anomalyId: agent.anomalyId ?? undefined,
+        realityId: agent.realityId ?? undefined,
+        competencyId: agent.competencyId ?? undefined,
     };
 
     if (!includeRelations) {
@@ -25,6 +33,15 @@ export function whitelistAgentFields(
             : undefined,
         game: ('game' in agent && agent.game)
             ? whitelistGameFields(agent.game, false)
+            : undefined,
+        anomaly: ('anomaly' in agent && agent.anomaly)
+            ? whitelistAnomalyFields(agent.anomaly)
+            : undefined,
+        reality: ('reality' in agent && agent.reality)
+            ? whitelistRealityFields(agent.reality)
+            : undefined,
+        competency: ('competency' in agent && agent.competency)
+            ? whitelistCompetencyFields(agent.competency)
             : undefined,
     };
 }

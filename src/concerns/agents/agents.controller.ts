@@ -3,7 +3,8 @@ import {
     createAgent, 
     findUserAgents, 
     findGameAgents, 
-    findAgentById
+    findAgentById,
+    updateAgent
 } from "./agent.service";
 import { getIdFromJWT } from "@/util";
 import { whitelistAgentFields } from "./agent.util";
@@ -67,9 +68,38 @@ export const postAgent = async (req: Request, res: Response) => {
     }
 };
 
+// PATCH /agent/:id endpoint controller
+export const patchAgent = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const userId = getIdFromJWT(req);
+        const agentData = req.body.agent;
+
+        // Check if agent exists
+        const existingAgent = await findAgentById(id);
+        if (!existingAgent) {
+            res.status(404).json({ messages: ['Agent not found'] });
+            return;
+        }
+
+        // Check if user owns the agent
+        if (existingAgent.playerId !== userId) {
+            res.status(403).json({ messages: ['This is not your agent'] });
+            return;
+        }
+
+        const updatedAgent = await updateAgent(id, agentData);
+        res.status(200).json({ agent: whitelistAgentFields(updatedAgent) });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ messages: ["Internal Server Error"] });
+    }
+};
+
 export default {
     getAgentById,
     postAgent,
     getUserAgents,
     getGameAgents,
+    patchAgent,
 };

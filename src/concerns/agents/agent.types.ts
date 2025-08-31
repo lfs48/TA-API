@@ -1,8 +1,18 @@
-import { Agent, Game, User } from "@prisma/client";
+import { 
+    Agent, 
+    Anomaly, 
+    Competency, 
+    Game, 
+    Reality,
+    User 
+} from "@prisma/client";
 
 export type AgentWithRelations = Agent & {
     player?: User;
     game?: Game;
+    anomaly?: Anomaly;
+    reality?: Reality;
+    competency?: Competency;
 }
 
 export interface AgentData {
