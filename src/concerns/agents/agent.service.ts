@@ -1,6 +1,7 @@
 import prisma from '@/services';
 import { Agent } from '@prisma/client';
 import { AgentData } from 'concerns/agents/agent.types';
+import { DEFAULT_AGENT_QUALITIES } from './agent.constants';
 
 // Fetch an agent by id
 export const findAgentById = async (
@@ -20,6 +21,7 @@ export const createAgent = async (agentData: AgentData) => {
   return await prisma.agent.create({
     data: {
       ...agentData,
+      qualities: DEFAULT_AGENT_QUALITIES,
     },
     include: {
       player: true,

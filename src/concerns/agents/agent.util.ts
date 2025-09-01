@@ -17,6 +17,7 @@ export function whitelistAgentFields(
         name: agent.name,
         playerId: agent.playerId,
         gameId: agent.gameId,
+        qualities: agent.qualities,
         anomalyId: agent.anomalyId ?? undefined,
         realityId: agent.realityId ?? undefined,
         competencyId: agent.competencyId ?? undefined,
