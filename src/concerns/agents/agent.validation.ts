@@ -49,3 +49,21 @@ export const patchAgentValidation = z.object({
         })
     })
 });
+
+// Validation for quality adjustment endpoints
+export const patchAgentQualityValidation = z.object({
+    body: z.object({
+        quality: z.enum([
+            "attentiveness",
+            "duplicity", 
+            "dynamism",
+            "empathy",
+            "initiative",
+            "persistence",
+            "presence",
+            "professionalism",
+            "subtlety"
+        ]),
+        quantity: z.number().int()
+    })
+});

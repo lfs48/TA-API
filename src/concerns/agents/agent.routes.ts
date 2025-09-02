@@ -8,6 +8,7 @@ import {
 import { 
     postAgentValidation,
     patchAgentValidation,
+    patchAgentQualityValidation,
 } from './agent.validation';
 
 const agentRouter = express.Router();
@@ -17,5 +18,7 @@ agentRouter.get("/user/:id/agents", authenticator, agentsController.getUserAgent
 agentRouter.get("/game/:id/agents", authenticator, agentsController.getGameAgents);
 agentRouter.post("/agent", authenticator, validator(postAgentValidation), agentsController.postAgent);
 agentRouter.patch("/agent/:id", authenticator, validator(patchAgentValidation), agentsController.patchAgent);
+agentRouter.patch("/agent/:id/qa/current", authenticator, validator(patchAgentQualityValidation), agentsController.patchAgentQualityCurrent);
+agentRouter.patch("/agent/:id/qa/max", authenticator, validator(patchAgentQualityValidation), agentsController.patchAgentQualityMax);
 
 export default agentRouter;
