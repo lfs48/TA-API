@@ -38,4 +38,15 @@ export const DEFAULT_AGENT_QUALITIES = {
   }
 } as const;
 
-export type AgentQualities = typeof DEFAULT_AGENT_QUALITIES;
+export const DEFAULT_AGENT_CURRENCY = {
+  "commendations": {
+    "current": 0,
+    "banked": 0,
+    "spent": 0,
+  },
+  "demerits": {
+    "current": 0,
+    "banked": 0,
+    "spent": 0
+  },
+} as const;

@@ -6,7 +6,10 @@ import {
     Reality,
     User 
 } from "@prisma/client";
-import { AgentQualities } from "./agent.constants";
+import { 
+    DEFAULT_AGENT_CURRENCY,
+    DEFAULT_AGENT_QUALITIES 
+} from "./agent.constants";
 
 export type AgentWithRelations = Agent & {
     player?: User;
@@ -25,3 +28,7 @@ export interface AgentData {
     realityId?: string;
     competencyId?: string;
 }
+
+export type AgentQualities = typeof DEFAULT_AGENT_QUALITIES;
+
+export type AgentCurrencies = typeof DEFAULT_AGENT_CURRENCY;

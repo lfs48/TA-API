@@ -74,6 +74,7 @@ model Agent {
   name String @default("")
 
   qualities Json @default("{\"attentiveness\":{\"current\":0,\"max\":0},\"duplicity\":{\"current\":0,\"max\":0},\"dynamism\":{\"current\":0,\"max\":0},\"empathy\":{\"current\":0,\"max\":0},\"initiative\":{\"current\":0,\"max\":0},\"persistence\":{\"current\":0,\"max\":0},\"presence\":{\"current\":0,\"max\":0},\"professionalism\":{\"current\":0,\"max\":0},\"subtlety\":{\"current\":0,\"max\":0}}")
+  currency Json @default("{\"commendations\":{\"current\":0,\"banked\":0,\"spent\":0},\"demerits\":{\"current\":0,\"banked\":0,\"spent\":0}}")
 
   game   Game   @relation(fields: [gameId], references: [id])
   gameId String
