@@ -141,3 +141,92 @@ export const updateAgentQualityMax = async (id: string, quality: string, quantit
     },
   });
 };
+
+// Earn currency (increase current and banked)
+export const earnAgentCurrency = async (id: string, currency: string, quantity: number) => {
+  const agent = await findAgentById(id);
+  if (!agent) return null;
+
+  const currencyData = agent.currency as any || DEFAULT_AGENT_CURRENCY;
+  const currentValues = currencyData[currency] || { current: 0, banked: 0, spent: 0 };
+
+  const updatedCurrency = {
+    ...currencyData,
+    [currency]: {
+      ...currentValues,
+      current: currentValues.current + quantity,
+      banked: currentValues.banked + quantity
+    }
+  };
+
+  return await prisma.agent.update({
+    where: { id },
+    data: { currency: updatedCurrency },
+    include: {
+      player: true,
+      game: true,
+      anomaly: true,
+      reality: true,
+      competency: true,
+    },
+  });
+};
+
+// Spend currency (decrease banked, increase spent)
+export const spendAgentCurrency = async (id: string, currency: string, quantity: number) => {
+  const agent = await findAgentById(id);
+  if (!agent) return null;
+
+  const currencyData = agent.currency as any || DEFAULT_AGENT_CURRENCY;
+  const currentValues = currencyData[currency] || { current: 0, banked: 0, spent: 0 };
+
+  const updatedCurrency = {
+    ...currencyData,
+    [currency]: {
+      ...currentValues,
+      banked: currentValues.banked - quantity,
+      spent: currentValues.spent + quantity
+    }
+  };
+
+  return await prisma.agent.update({
+    where: { id },
+    data: { currency: updatedCurrency },
+    include: {
+      player: true,
+      game: true,
+      anomaly: true,
+      reality: true,
+      competency: true,
+    },
+  });
+};
+
+// Reset currency current value to 0
+export const resetAgentCurrencyCurrent = async (id: string, currency: string) => {
+  const agent = await findAgentById(id);
+  if (!agent) return null;
+
+  const currencyData = agent.currency as any || DEFAULT_AGENT_CURRENCY;
+  const currentValues = currencyData[currency] || { current: 0, banked: 0, spent: 0 };
+
+  const updatedCurrency = {
+    ...currencyData,
+    [currency]: {
+      ...currentValues,
+      current: 0
+    }
+  };
+
+  return await prisma.agent.update({
+    where: { id },
+    data: { currency: updatedCurrency },
+    include: {
+      player: true,
+      game: true,
+      anomaly: true,
+      reality: true,
+      competency: true,
+    },
+  });
+};

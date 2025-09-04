@@ -67,3 +67,18 @@ export const patchAgentQualityValidation = z.object({
         quantity: z.number().int()
     })
 });
+
+// Validation for currency endpoints
+export const patchAgentCurrencyValidation = z.object({
+    body: z.object({
+        currency: z.enum(["commendations", "demerits"]),
+        quantity: z.number().int()
+    })
+});
+
+// Validation for currency reset endpoint
+export const patchAgentCurrencyResetValidation = z.object({
+    body: z.object({
+        currency: z.enum(["commendations", "demerits"])
+    })
+});

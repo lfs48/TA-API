@@ -9,6 +9,8 @@ import {
     postAgentValidation,
     patchAgentValidation,
     patchAgentQualityValidation,
+    patchAgentCurrencyValidation,
+    patchAgentCurrencyResetValidation,
 } from './agent.validation';
 
 const agentRouter = express.Router();
@@ -20,5 +22,8 @@ agentRouter.post("/agent", authenticator, validator(postAgentValidation), agents
 agentRouter.patch("/agent/:id", authenticator, validator(patchAgentValidation), agentsController.patchAgent);
 agentRouter.patch("/agent/:id/qa/current", authenticator, validator(patchAgentQualityValidation), agentsController.patchAgentQualityCurrent);
 agentRouter.patch("/agent/:id/qa/max", authenticator, validator(patchAgentQualityValidation), agentsController.patchAgentQualityMax);
+agentRouter.patch("/agent/:id/currency/earn", authenticator, validator(patchAgentCurrencyValidation), agentsController.patchAgentCurrencyEarn);
+agentRouter.patch("/agent/:id/currency/spend", authenticator, validator(patchAgentCurrencyValidation), agentsController.patchAgentCurrencySpend);
+agentRouter.patch("/agent/:id/currency/reset-current", authenticator, validator(patchAgentCurrencyResetValidation), agentsController.patchAgentCurrencyResetCurrent);
 
 export default agentRouter;
