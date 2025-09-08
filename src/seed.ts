@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from 'bcryptjs';
-import { id } from "zod/dist/types/v4/locales";
+import { ABILITY_SEED_DATA } from "./concerns/arc/arc.constants";
 
 const prisma = new PrismaClient();
 
@@ -354,6 +354,20 @@ async function main() {
         })
     );
 
+    //Seed abilities
+    await Promise.all(
+        ABILITY_SEED_DATA.map(async (ability) => {
+            await prisma.ability.create({
+                data: {
+                    id: ability.id,
+                    title: ability.title,
+                    data: ability.data,
+                    anomalyId: ability.anomalyId,
+                },
+            });
+        })
+    );
+
     //Seed agents
     await Promise.all(
         agentData.map(async (agent) => {
@@ -368,6 +382,30 @@ async function main() {
                     competencyId: agent.competencyId,
                 },
             });
+        })
+    );
+
+    // Seed ability instances for each agent
+    await Promise.all(
+        agentData.map(async (agent) => {
+            // Find abilities that match this agent's anomaly
+            const matchingAbilities = ABILITY_SEED_DATA.filter(
+                ability => (ability as any).anomalyId === agent.anomalyId
+            );
+
+            // Create ability instances for each matching ability
+            await Promise.all(
+                matchingAbilities.map(async (ability) => {
+                    await prisma.abilityInstance.create({
+                        data: {
+                            agentId: agent.id,
+                            abilityId: ability.id,
+                            practiced: false,
+                            answers: {},
+                        },
+                    });
+                })
+            );
         })
     );
 
