@@ -91,6 +91,8 @@ model Agent {
   competency   Competency? @relation(fields: [competencyId], references: [id])
   competencyId String?
 
+  abilityInstances AbilityInstance[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -100,11 +102,44 @@ model Anomaly {
 
   name String @default("")
 
-  Agent     Agent[]
-  
+  agents     Agent[]
+
+  abilities  Ability[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+}
+
+model Ability {
+  id String @id @default(uuid())
+
+  title String @default("")
+  data Json @default("{}")
+
+  anomaly Anomaly @relation(fields: [anomalyId], references: [id])
+  anomalyId String
+
+  abilityInstances AbilityInstance[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AbilityInstance {
+  id String @id @default(uuid())
+
+  practiced Boolean @default(false)
+  answers Json @default("{}")
+
+  ability   Ability   @relation(fields: [abilityId], references: [id])
+  abilityId String
+
+  agent   Agent   @relation(fields: [agentId], references: [id])
+  agentId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Reality {
