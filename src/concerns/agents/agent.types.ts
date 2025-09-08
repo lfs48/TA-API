@@ -1,4 +1,5 @@
 import { 
+    AbilityInstance,
     Agent, 
     Anomaly, 
     Competency, 
@@ -17,6 +18,7 @@ export type AgentWithRelations = Agent & {
     anomaly?: Anomaly;
     reality?: Reality;
     competency?: Competency;
+    abilityInstances?: AbilityInstance[];
 }
 
 export interface AgentData {

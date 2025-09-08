@@ -9,10 +9,7 @@ export const findAgentById = async (
 ) => {
     return await prisma.agent.findUnique({
         where: {id: id},
-        include: {
-            player: true,
-            game: true,
-        }
+        include: allAgentRelations,
     })
 }
 
@@ -24,10 +21,7 @@ export const createAgent = async (agentData: AgentData) => {
       qualities: DEFAULT_AGENT_QUALITIES,
       currency: DEFAULT_AGENT_CURRENCY,
     },
-    include: {
-      player: true,
-      game: true,
-    },
+    include: allAgentRelations
   });
 };
 
@@ -38,13 +32,7 @@ export const updateAgent = async (id: string, agentData: Partial<AgentData>) => 
     data: {
       ...agentData,
     },
-    include: {
-      player: true,
-      game: true,
-      anomaly: true,
-      reality: true,
-      competency: true,
-    },
+    include: allAgentRelations
   });
 };
 
@@ -52,10 +40,7 @@ export const updateAgent = async (id: string, agentData: Partial<AgentData>) => 
 export const findUserAgents = async (playerId: string) => {
   return await prisma.agent.findMany({
     where: { playerId },
-    include: {
-      player: true,
-      game: true,
-    },
+    include: allAgentRelations
   });
 };
 
@@ -63,13 +48,7 @@ export const findUserAgents = async (playerId: string) => {
 export const findGameAgents = async (gameId: string) => {
   return await prisma.agent.findMany({
     where: { gameId },
-    include: {
-      player: true,
-      game: true,
-      anomaly: true,
-      reality: true,
-      competency: true,
-    },
+    include: allAgentRelations
   });
 };
 
@@ -96,13 +75,7 @@ export const updateAgentQualityCurrent = async (id: string, quality: string, qua
   return await prisma.agent.update({
     where: { id },
     data: { qualities: updatedQualities },
-    include: {
-      player: true,
-      game: true,
-      anomaly: true,
-      reality: true,
-      competency: true,
-    },
+    include: allAgentRelations,
   });
 };
 
@@ -132,13 +105,7 @@ export const updateAgentQualityMax = async (id: string, quality: string, quantit
   return await prisma.agent.update({
     where: { id },
     data: { qualities: updatedQualities },
-    include: {
-      player: true,
-      game: true,
-      anomaly: true,
-      reality: true,
-      competency: true,
-    },
+    include: allAgentRelations,
   });
 };
 
@@ -230,3 +197,12 @@ export const resetAgentCurrencyCurrent = async (id: string, currency: string) =>
     },
   });
 };
+
+const allAgentRelations = {
+  player: true,
+  game: true,
+  anomaly: true,
+  reality: true,
+  competency: true,
+  abilityInstances: true,
+}

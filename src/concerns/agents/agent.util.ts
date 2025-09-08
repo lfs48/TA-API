@@ -1,4 +1,4 @@
-import { Agent } from "@prisma/client";
+import { AbilityInstance, Agent } from "@prisma/client";
 import { whitelistUserFields } from "@/util";
 import { whitelistGameFields } from "@/util";
 import { AgentWithRelations } from "concerns/agents/agent.types";
@@ -22,6 +22,9 @@ export function whitelistAgentFields(
         anomalyId: agent.anomalyId ?? undefined,
         realityId: agent.realityId ?? undefined,
         competencyId: agent.competencyId ?? undefined,
+        abilityInstanceIds: 'abilityInstances' in agent && agent.abilityInstances
+            ? agent.abilityInstances.map(instance => instance.id)
+            : []
     };
 
     if (!includeRelations) {
@@ -45,6 +48,19 @@ export function whitelistAgentFields(
         competency: ('competency' in agent && agent.competency)
             ? whitelistCompetencyFields(agent.competency)
             : undefined,
+        abilityInstances: 'abilityInstances' in agent && agent.abilityInstances
+            ? agent.abilityInstances.map(instance => whitelistAbilityInstanceFields(instance))
+            : [],
+    };
+}
+
+export function whitelistAbilityInstanceFields(abilityInstance: AbilityInstance) {
+    return {
+        id: abilityInstance.id,
+        abilityId: abilityInstance.abilityId,
+        agentId: abilityInstance.agentId,
+        practiced: abilityInstance.practiced,
+        answers: abilityInstance.answers,
     };
 }
 

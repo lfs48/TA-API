@@ -4,7 +4,8 @@ import { Anomaly, Reality, Competency } from '@prisma/client';
 // Anomaly services
 export const findAllAnomalies = async (): Promise<Anomaly[]> => {
     return await prisma.anomaly.findMany({
-        orderBy: { name: 'asc' }
+        orderBy: { name: 'asc' },
+        include: allAnomalyRelations,
     });
 };
 
@@ -36,3 +37,7 @@ export const findAllArcData = async () => {
         competencies,
     };
 };
+
+const allAnomalyRelations = {
+    abilities: true,
+}

@@ -16,7 +16,7 @@ export const getAnomalies = async (req: Request, res: Response) => {
     try {
         const anomalies = await findAllAnomalies();
         res.status(200).json({
-            anomalies: anomalies.map(anomaly => whitelistAnomalyFields(anomaly))
+            anomalies: anomalies.map(anomaly => whitelistAnomalyFields(anomaly, true))
         });
     } catch (error) {
         console.log(error);
@@ -55,7 +55,7 @@ export const getArcs = async (req: Request, res: Response) => {
     try {
         const { anomalies, realities, competencies } = await findAllArcData();
         res.status(200).json({
-            anomalies: anomalies.map(anomaly => whitelistAnomalyFields(anomaly)),
+            anomalies: anomalies.map(anomaly => whitelistAnomalyFields(anomaly, true)),
             realities: realities.map(reality => whitelistRealityFields(reality)),
             competencies: competencies.map(competency => whitelistCompetencyFields(competency))
         });
