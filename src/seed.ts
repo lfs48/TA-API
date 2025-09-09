@@ -306,8 +306,8 @@ async function main() {
     );
 
     // Seed invites
-    await Promise.all(
-        inviteData.map(async (invite) => {
+    for (const invite of inviteData) {
+        try {
             await prisma.invite.create({
                 data: {
                     inviterId: invite.inviterId,
@@ -315,14 +315,19 @@ async function main() {
                     gameId: invite.gameId,
                 },
             });
-        })
-    );
+        } catch (error) {
+            // Skip if already exists
+            console.log(`Invite already exists for game ${invite.gameId} and invitee ${invite.inviteeId}`);
+        }
+    }
 
     //Seed anomalies
     await Promise.all(
         anomalyData.map(async (anomaly) => {
-            await prisma.anomaly.create({
-                data: {
+            await prisma.anomaly.upsert({
+                where: { id: anomaly.id },
+                update: {},
+                create: {
                     id: anomaly.id,
                     name: anomaly.name,
                 },
@@ -333,8 +338,10 @@ async function main() {
     // Seed realities
     await Promise.all(
         realityData.map(async (reality) => {
-            await prisma.reality.create({
-                data: {
+            await prisma.reality.upsert({
+                where: { id: reality.id },
+                update: {},
+                create: {
                     id: reality.id,
                     name: reality.name,
                 },
@@ -345,8 +352,10 @@ async function main() {
     // Seed competencies
     await Promise.all(
         competencyData.map(async (competency) => {
-            await prisma.competency.create({
-                data: {
+            await prisma.competency.upsert({
+                where: { id: competency.id },
+                update: {},
+                create: {
                     id: competency.id,
                     name: competency.name,
                 },
@@ -357,8 +366,10 @@ async function main() {
     //Seed abilities
     await Promise.all(
         ABILITY_SEED_DATA.map(async (ability) => {
-            await prisma.ability.create({
-                data: {
+            await prisma.ability.upsert({
+                where: { id: ability.id },
+                update: {},
+                create: {
                     id: ability.id,
                     title: ability.title,
                     data: ability.data,
@@ -371,8 +382,10 @@ async function main() {
     //Seed agents
     await Promise.all(
         agentData.map(async (agent) => {
-            await prisma.agent.create({
-                data: {
+            await prisma.agent.upsert({
+                where: { id: agent.id },
+                update: {},
+                create: {
                     id: agent.id,
                     name: agent.name,
                     playerId: agent.playerId,
@@ -386,28 +399,29 @@ async function main() {
     );
 
     // Seed ability instances for each agent
-    await Promise.all(
-        agentData.map(async (agent) => {
-            // Find abilities that match this agent's anomaly
-            const matchingAbilities = ABILITY_SEED_DATA.filter(
-                ability => (ability as any).anomalyId === agent.anomalyId
-            );
+    for (const agent of agentData) {
+        // Find abilities that match this agent's anomaly
+        const matchingAbilities = ABILITY_SEED_DATA.filter(
+            ability => (ability as any).anomalyId === agent.anomalyId
+        );
 
-            // Create ability instances for each matching ability
-            await Promise.all(
-                matchingAbilities.map(async (ability) => {
-                    await prisma.abilityInstance.create({
-                        data: {
-                            agentId: agent.id,
-                            abilityId: ability.id,
-                            practiced: false,
-                            answers: {},
-                        },
-                    });
-                })
-            );
-        })
-    );
+        // Create ability instances for each matching ability
+        for (const ability of matchingAbilities) {
+            try {
+                await prisma.abilityInstance.create({
+                    data: {
+                        agentId: agent.id,
+                        abilityId: ability.id,
+                        practiced: false,
+                        answers: {},
+                    },
+                });
+            } catch (error) {
+                // Skip if already exists
+                console.log(`Ability instance already exists for agent ${agent.id} and ability ${ability.id}`);
+            }
+        }
+    }
 
 };
 
