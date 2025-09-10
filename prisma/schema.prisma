@@ -158,6 +158,9 @@ model Competency {
   id String @id @default(uuid())
 
   name String @default("")
+  directives String[] @default([])
+  sanctioned String[] @default([])
+  assessment Json @default("{}")
 
   Agent     Agent[]
 

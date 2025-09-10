@@ -11,7 +11,7 @@
     "seed": "ts-node src/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "^6.6.0",
+    "@prisma/client": "^6.7.0",
     "@types/bcrypt": "^5.0.2",
     "@types/eff-diceware-passphrase": "^3.0.2",
     "@types/jsonwebtoken": "^9.0.9",
