@@ -1,3 +1,9 @@
+// Anomaly utils
+export * from "@/concerns/anomalies/anomaly.util";
+
+//Arc utils
+export * from "@/concerns/arc/arc.util";
+
 // Auth utils
 export * from "@/concerns/auth/auth.util";
 

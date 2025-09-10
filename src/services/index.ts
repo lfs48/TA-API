@@ -7,6 +7,12 @@ export default prisma;
 // Agent services
 export * from "@/concerns/agents/agent.service";
 
+//Anomaly services
+export * from "@/concerns/anomalies/anomaly.service";
+
+// Arc services
+export * from "@/concerns/arc/arc.service";
+
 // Game services
 export * from "@/concerns/games/game.service";
 

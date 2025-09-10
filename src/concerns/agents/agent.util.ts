@@ -6,7 +6,7 @@ import {
     whitelistAnomalyFields, 
     whitelistCompetencyFields, 
     whitelistRealityFields 
-} from "@/concerns/arc/arc.util";
+} from "@/util";
 
 export function whitelistAgentFields(
     agent: AgentWithRelations | Agent,

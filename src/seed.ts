@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from 'bcryptjs';
-import { ABILITY_SEED_DATA } from "./concerns/arc/arc.constants";
+import { ABILITY_SEED_DATA } from "./concerns/anomalies/anomaly.constants";
 
 const prisma = new PrismaClient();
 

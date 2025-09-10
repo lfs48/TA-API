@@ -1,13 +1,5 @@
 import prisma from '@/services';
-import { Anomaly, Reality, Competency } from '@prisma/client';
-
-// Anomaly services
-export const findAllAnomalies = async (): Promise<Anomaly[]> => {
-    return await prisma.anomaly.findMany({
-        orderBy: { name: 'asc' },
-        include: allAnomalyRelations,
-    });
-};
+import { Reality, Competency } from '@prisma/client';
 
 // Reality services
 export const findAllRealities = async (): Promise<Reality[]> => {
@@ -23,21 +15,15 @@ export const findAllCompetencies = async (): Promise<Competency[]> => {
     });
 };
 
-// Get all arc data (anomalies, realities, competencies) in one call
+// Get all arc data (realities, competencies) in one call
 export const findAllArcData = async () => {
-    const [anomalies, realities, competencies] = await Promise.all([
-        findAllAnomalies(),
+    const [realities, competencies] = await Promise.all([
         findAllRealities(),
         findAllCompetencies(),
     ]);
 
     return {
-        anomalies,
         realities,
         competencies,
     };
 };
-
-const allAnomalyRelations = {
-    abilities: true,
-}

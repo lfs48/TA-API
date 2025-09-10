@@ -129,13 +129,7 @@ export const earnAgentCurrency = async (id: string, currency: string, quantity: 
   return await prisma.agent.update({
     where: { id },
     data: { currency: updatedCurrency },
-    include: {
-      player: true,
-      game: true,
-      anomaly: true,
-      reality: true,
-      competency: true,
-    },
+    include: allAgentRelations,
   });
 };
 
@@ -159,13 +153,7 @@ export const spendAgentCurrency = async (id: string, currency: string, quantity:
   return await prisma.agent.update({
     where: { id },
     data: { currency: updatedCurrency },
-    include: {
-      player: true,
-      game: true,
-      anomaly: true,
-      reality: true,
-      competency: true,
-    },
+    include: allAgentRelations,
   });
 };
 
@@ -188,20 +176,18 @@ export const resetAgentCurrencyCurrent = async (id: string, currency: string) =>
   return await prisma.agent.update({
     where: { id },
     data: { currency: updatedCurrency },
-    include: {
-      player: true,
-      game: true,
-      anomaly: true,
-      reality: true,
-      competency: true,
-    },
+    include: allAgentRelations,
   });
 };
 
 const allAgentRelations = {
   player: true,
   game: true,
-  anomaly: true,
+  anomaly: {
+    include: {
+      abilities: true,
+    }
+  },
   reality: true,
   competency: true,
   abilityInstances: true,
