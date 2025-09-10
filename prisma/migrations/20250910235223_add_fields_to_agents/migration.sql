@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Agent" ADD COLUMN     "assessment" INTEGER[] DEFAULT ARRAY[0, 0, 0]::INTEGER[],
+ADD COLUMN     "directive" INTEGER NOT NULL DEFAULT 0;
