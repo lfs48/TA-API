@@ -1,30 +1,18 @@
 import { Request, Response } from 'express';
+import { findAllArcData } from './arc.service';
 import { 
-    findAllCompetencies,
-    findAllArcData
-} from './arc.service';
-import { 
+    whitelistAnomalyFields, 
+    whitelistRealityFields, 
     whitelistCompetencyFields 
-} from './arc.util';
-
-// GET /competencies endpoint controller
-export const getCompetencies = async (req: Request, res: Response) => {
-    try {
-        const competencies = await findAllCompetencies();
-        res.status(200).json({
-            competencies: competencies.map(competency => whitelistCompetencyFields(competency))
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ messages: ['Internal Server Error'] });
-    }
-};
+} from '@/util';
 
 // GET /arcs endpoint controller - returns competencies
 export const getArcs = async (req: Request, res: Response) => {
     try {
-        const { competencies } = await findAllArcData();
+        const { anomalies, realities, competencies } = await findAllArcData();
         res.status(200).json({
+            anomalies: anomalies.map(anomaly => whitelistAnomalyFields(anomaly)),
+            realities: realities.map(reality => whitelistRealityFields(reality)),
             competencies: competencies.map(competency => whitelistCompetencyFields(competency))
         });
     } catch (error) {
@@ -34,6 +22,5 @@ export const getArcs = async (req: Request, res: Response) => {
 };
 
 export default {
-    getCompetencies,
     getArcs,
 };

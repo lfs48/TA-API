@@ -9,6 +9,7 @@ import agentRouter from '@/concerns/agents/agent.routes';
 import arcRouter from '@/concerns/arc/arc.routes';
 import anomalyRouter from '@/concerns/anomalies/anomaly.routes';
 import realityRouter from '@/concerns/realities/reality.routes';
+import competencyRouter from '@/concerns/competencies/competency.routes';
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.use(agentRouter);
 router.use(arcRouter);
 router.use(anomalyRouter);
 router.use(realityRouter);
+router.use(competencyRouter);
 
 export default router;

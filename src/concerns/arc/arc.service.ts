@@ -1,20 +1,16 @@
-import prisma from '@/services';
-import { Competency } from '@prisma/client';
-
-// Competency services
-export const findAllCompetencies = async (): Promise<Competency[]> => {
-    return await prisma.competency.findMany({
-        orderBy: { name: 'asc' }
-    });
-};
+import { findAllAnomalies, findAllRealities, findAllCompetencies } from '@/services';
 
 // Get all arc data (competencies) in one call
 export const findAllArcData = async () => {
-    const [competencies] = await Promise.all([
+    const [anomalies, realities, competencies] = await Promise.all([
+        findAllAnomalies(),
+        findAllRealities(),
         findAllCompetencies(),
     ]);
 
     return {
+        anomalies,
+        realities,
         competencies,
     };
 };
