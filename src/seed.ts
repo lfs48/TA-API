@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from 'bcryptjs';
+
 import { ABILITY_SEED_DATA } from "./concerns/anomalies/anomaly.constants";
+import { COMPETENCY_SEED_DATA } from "./concerns/competencies/competency.constants";
 
 const prisma = new PrismaClient();
 
@@ -181,45 +183,6 @@ const realityData = [
     }
 ];
 
-const competencyData = [
-    {
-        id: 'pr',
-        name: 'PR',
-    },
-    {
-        id: 'rnd',
-        name: 'R&D',
-    },
-    {
-        id: 'barista',
-        name: 'Barista',
-    },
-    {
-        id: 'ceo',
-        name: 'CEO',
-    },
-    {
-        id: 'intern',
-        name: 'Intern',
-    },
-    {
-        id: 'gravedigger',
-        name: 'Gravedigger',
-    },
-    {
-        id: 'reception',
-        name: 'Reception',
-    },
-    {
-        id: 'hotline',
-        name: 'Hotline',
-    },
-    {
-        id: 'clown',
-        name: 'Clown',
-    }
-];
-
 const agentData = [
     {
         id: 'agent1',
@@ -351,7 +314,7 @@ async function main() {
 
     // Seed competencies
     await Promise.all(
-        competencyData.map(async (competency) => {
+        COMPETENCY_SEED_DATA.map(async (competency) => {
             await prisma.competency.upsert({
                 where: { id: competency.id },
                 update: {},
