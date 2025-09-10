@@ -8,6 +8,7 @@ import inviteRouter from '@/concerns/invites/invite.routes';
 import agentRouter from '@/concerns/agents/agent.routes';
 import arcRouter from '@/concerns/arc/arc.routes';
 import anomalyRouter from '@/concerns/anomalies/anomaly.routes';
+import realityRouter from '@/concerns/realities/reality.routes';
 
 const router = Router();
 
@@ -23,5 +24,6 @@ router.use(inviteRouter);
 router.use(agentRouter);
 router.use(arcRouter);
 router.use(anomalyRouter);
+router.use(realityRouter);
 
 export default router;

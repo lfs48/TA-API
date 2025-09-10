@@ -4,6 +4,9 @@ export * from "@/concerns/anomalies/anomaly.util";
 //Arc utils
 export * from "@/concerns/arc/arc.util";
 
+// Reality utils
+export * from "@/concerns/realities/reality.util";
+
 // Auth utils
 export * from "@/concerns/auth/auth.util";
 

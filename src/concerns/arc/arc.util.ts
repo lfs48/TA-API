@@ -1,11 +1,4 @@
-import { Reality, Competency } from '@prisma/client';
-
-export function whitelistRealityFields(reality: Reality) {
-    return {
-        id: reality.id,
-        name: reality.name,
-    };
-}
+import { Competency } from '@prisma/client';
 
 export function whitelistCompetencyFields(competency: Competency) {
     return {
