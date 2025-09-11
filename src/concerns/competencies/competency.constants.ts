@@ -424,4 +424,4 @@ export const COMPETENCY_SEED_DATA = [
             }
         ]
     }
-] as const;
+];

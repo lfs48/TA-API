@@ -319,8 +319,7 @@ async function main() {
                 where: { id: competency.id },
                 update: {},
                 create: {
-                    id: competency.id,
-                    name: competency.name,
+                    ...competency,
                 },
             });
         })
