@@ -141,6 +141,8 @@ model AbilityInstance {
   agent   Agent   @relation(fields: [agentId], references: [id])
   agentId String
 
+  @@unique([abilityId, agentId])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
