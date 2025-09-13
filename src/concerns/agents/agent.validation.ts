@@ -6,7 +6,6 @@ const qualitySchema = z.object({
     max: z.number().int().min(0).max(9),
 });
 
-// Schema for agent qualities validation
 const qualitiesSchema = z.object({
     attentiveness: qualitySchema,
     duplicity: qualitySchema,
@@ -17,7 +16,22 @@ const qualitiesSchema = z.object({
     presence: qualitySchema,
     professionalism: qualitySchema,
     subtlety: qualitySchema,
-}).optional();
+});
+
+const currencySchema = z.object({
+    current: z.number().int().min(0),
+    banked: z.number().int().min(0),
+    spent: z.number().int().min(0),
+});
+
+const currenciesSchema = z.object({
+    commendations: currencySchema,
+    demerits: currencySchema,
+});
+
+const directiveSchema = z.number().min(0).max(1);
+const sanctionedSchema = z.array(z.boolean()).length(3);
+const assessmentSchema = z.array(z.number().min(0).max(1));
 
 export const postAgentValidation = z.object({
     body: z.object({
@@ -26,7 +40,6 @@ export const postAgentValidation = z.object({
                 .min(1, "Name is required")
                 .max(30, "Name must be 30 characters or fewer"),
             gameId: z.string(),
-            qualities: qualitiesSchema.optional(),
             anomalyId: z.string().optional(),
             realityId: z.string().optional(),
             competencyId: z.string().optional(),
@@ -43,10 +56,14 @@ export const patchAgentValidation = z.object({
                 .max(30, "Name must be 30 characters or fewer")
                 .optional(),
             qualities: qualitiesSchema.optional(),
+            currency: currenciesSchema.optional(),
             anomalyId: z.string().optional(),
             realityId: z.string().optional(),
             competencyId: z.string().optional(),
-        })
+            directive: directiveSchema.optional(),
+            sanctioned: sanctionedSchema.optional(),
+            assessment: assessmentSchema.optional()
+        }),
     })
 });
 
