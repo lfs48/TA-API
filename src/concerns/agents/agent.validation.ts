@@ -29,6 +29,8 @@ const currenciesSchema = z.object({
     demerits: currencySchema,
 });
 
+const answersSchema = z.record(z.string(), z.number());
+
 const directiveSchema = z.number().min(0).max(1);
 const sanctionedSchema = z.array(z.boolean()).length(3);
 const assessmentSchema = z.array(z.number().min(0).max(1));
@@ -97,5 +99,15 @@ export const patchAgentCurrencyValidation = z.object({
 export const patchAgentCurrencyResetValidation = z.object({
     body: z.object({
         currency: z.enum(["commendations", "demerits"])
+    })
+});
+
+// Validation for ability instance endpoint
+export const patchAbilityInstanceValidation = z.object({
+    body: z.object({
+        abilityInstance: z.object({
+            practiced: z.boolean().optional(),
+            answers: answersSchema.optional()
+        })
     })
 });

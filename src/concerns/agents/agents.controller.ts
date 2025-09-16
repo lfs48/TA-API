@@ -9,10 +9,13 @@ import {
     updateAgentQualityMax,
     earnAgentCurrency,
     spendAgentCurrency,
-    resetAgentCurrencyCurrent
+    resetAgentCurrencyCurrent,
+    resetAgent,
+    findAbilityInstanceById,
+    updateAbilityInstance
 } from "./agent.service";
 import { getIdFromJWT } from "@/util";
-import { whitelistAgentFields } from "./agent.util";
+import { whitelistAgentFields, whitelistAbilityInstanceFields } from "./agent.util";
 
 // GET /agent/user endpoint controller (fetch all agents for the current user)
 export const getAgentById = async (req: Request, res: Response) => {
@@ -266,6 +269,71 @@ export const patchAgentCurrencyResetCurrent = async (req: Request, res: Response
     }
 };
 
+// PATCH /agent/:id/reset endpoint controller (reset agent for new mission)
+export const patchAgentReset = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const userId = getIdFromJWT(req);
+
+        // Get existing agent to verify ownership
+        const existingAgent = await findAgentById(id);
+        if (!existingAgent) {
+            res.status(404).json({ messages: ['Agent not found'] });
+            return;
+        }
+
+        // Check if user owns the agent
+        if (existingAgent.playerId !== userId) {
+            res.status(403).json({ messages: ['Not your Agent'] });
+            return;
+        }
+
+        const resetAgentResult = await resetAgent(id);
+        if (!resetAgentResult) {
+            res.status(404).json({ messages: ['Agent not found'] });
+            return;
+        }
+
+        res.status(200).json({ agent: whitelistAgentFields(resetAgentResult) });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ messages: ["Internal Server Error"] });
+    }
+};
+
+// PATCH /ability-instance/:id endpoint controller
+export const patchAbilityInstance = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const userId = getIdFromJWT(req);
+        const abilityInstanceData = req.body.abilityInstance;
+
+        // Get existing ability instance to verify ownership
+        const existingAbilityInstance = await findAbilityInstanceById(id);
+        if (!existingAbilityInstance) {
+            res.status(404).json({ messages: ['Ability instance not found'] });
+            return;
+        }
+
+        // Check if user owns the agent associated with this ability instance
+        if (existingAbilityInstance.agent.playerId !== userId) {
+            res.status(403).json({ messages: ['Not your ability instance'] });
+            return;
+        }
+
+        const updatedAbilityInstance = await updateAbilityInstance(id, abilityInstanceData);
+        if (!updatedAbilityInstance) {
+            res.status(404).json({ messages: ['Ability instance not found'] });
+            return;
+        }
+
+        res.status(200).json({ abilityInstance: whitelistAbilityInstanceFields(updatedAbilityInstance) });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ messages: ["Internal Server Error"] });
+    }
+};
+
 export default {
     getAgentById,
     postAgent,
@@ -277,4 +345,6 @@ export default {
     patchAgentCurrencyEarn,
     patchAgentCurrencySpend,
     patchAgentCurrencyResetCurrent,
+    patchAgentReset,
+    patchAbilityInstance,
 };

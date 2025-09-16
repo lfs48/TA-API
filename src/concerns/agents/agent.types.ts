@@ -1,4 +1,5 @@
 import { 
+    Ability,
     AbilityInstance,
     Agent, 
     Anomaly, 
@@ -21,6 +22,15 @@ export type AgentWithRelations = Agent & {
     abilityInstances?: AbilityInstance[];
 }
 
+export type AbilityInstanceWithRelations = AbilityInstance & {
+    ability?: Ability & {
+        anomaly?: Anomaly;
+    };
+    agent?: Agent & {
+        player?: User;
+    };
+}
+
 export interface AgentData {
     name: string;
     playerId: string;
@@ -29,6 +39,11 @@ export interface AgentData {
     anomalyId?: string;
     realityId?: string;
     competencyId?: string;
+}
+
+export interface AbilityInstanceData {
+    practiced?: boolean;
+    answers?: any;
 }
 
 export type AgentQualities = typeof DEFAULT_AGENT_QUALITIES;

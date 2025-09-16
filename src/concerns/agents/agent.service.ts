@@ -1,5 +1,4 @@
 import prisma from '@/services';
-import { Agent } from '@prisma/client';
 import { AgentData } from 'concerns/agents/agent.types';
 import { DEFAULT_AGENT_CURRENCY, DEFAULT_AGENT_QUALITIES } from './agent.constants';
 
@@ -178,6 +177,81 @@ export const resetAgentCurrencyCurrent = async (id: string, currency: string) =>
     data: { currency: updatedCurrency },
     include: allAgentRelations,
   });
+};
+
+// Reset agent for new mission - resets qualities to max, currency mission to 0, sanctioned to false
+export const resetAgent = async (id: string) => {
+  const agent = await findAgentById(id);
+  if (!agent) return null;
+
+  const qualities = agent.qualities as any || DEFAULT_AGENT_QUALITIES;
+  const currency = agent.currency as any || DEFAULT_AGENT_CURRENCY;
+  const sanctioned = agent.sanctioned as any || [false, false, false];
+
+  // Reset qualities current to equal max
+  const resetQualities = Object.keys(qualities).reduce((acc, key) => {
+    const quality = qualities[key];
+    acc[key] = {
+      ...quality,
+      current: quality.max
+    };
+    return acc;
+  }, {} as any);
+
+  // Reset currency current to 0 (mission values)
+  const resetCurrency = Object.keys(currency).reduce((acc, key) => {
+    const curr = currency[key];
+    acc[key] = {
+      ...curr,
+      current: 0
+    };
+    return acc;
+  }, {} as any);
+
+  // Reset sanctioned to all false
+  const resetSanctioned = sanctioned.map(() => false);
+
+  return await prisma.agent.update({
+    where: { id },
+    data: { 
+      qualities: resetQualities,
+      currency: resetCurrency,
+      sanctioned: resetSanctioned
+    },
+    include: allAgentRelations,
+  });
+};
+
+// Fetch an ability instance by id
+export const findAbilityInstanceById = async (id: string) => {
+  return await prisma.abilityInstance.findUnique({
+    where: { id },
+    include: abilityInstanceRelations,
+  });
+};
+
+// Update an ability instance by ID
+export const updateAbilityInstance = async (id: string, abilityInstanceData: { practiced?: boolean; answers?: any }) => {
+  return await prisma.abilityInstance.update({
+    where: { id },
+    data: {
+      ...abilityInstanceData,
+    },
+    include: abilityInstanceRelations,
+  });
+};
+
+const abilityInstanceRelations = {
+  ability: {
+    include: {
+      anomaly: true,
+    }
+  },
+  agent: {
+    include: {
+      player: true,
+    }
+  },
 };
 
 const allAgentRelations = {
