@@ -6,6 +6,7 @@ import {
     Competency, 
     Game, 
     Reality,
+    RequisitionInstance,
     User 
 } from "@prisma/client";
 import { 
@@ -20,6 +21,7 @@ export type AgentWithRelations = Agent & {
     reality?: Reality;
     competency?: Competency;
     abilityInstances?: AbilityInstance[];
+    requisitionInstances: RequisitionInstance[];
 }
 
 export type AbilityInstanceWithRelations = AbilityInstance & {

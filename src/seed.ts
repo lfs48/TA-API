@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from 'bcryptjs';
 
 import { ABILITY_SEED_DATA } from "./concerns/anomalies/anomaly.constants";
-import { COMPETENCY_SEED_DATA } from "./concerns/competencies/competency.constants";
+import { COMPETENCY_SEED_DATA, REQUISITION_SEED_DATA } from "./concerns/competencies/competency.constants";
 
 const prisma = new PrismaClient();
 
@@ -312,6 +312,19 @@ async function main() {
         })
     );
 
+    //Seed requisitions
+    await Promise.all(
+        REQUISITION_SEED_DATA.map(async (requisition) => {
+            await prisma.requisition.upsert({
+                where: { id: requisition.id },
+                update: {},
+                create: {
+                    ...requisition,
+                },
+            });
+        })
+    );
+
     // Seed competencies
     await Promise.all(
         COMPETENCY_SEED_DATA.map(async (competency) => {
@@ -381,6 +394,20 @@ async function main() {
             } catch (error) {
                 // Skip if already exists
                 console.log(`Ability instance already exists for agent ${agent.id} and ability ${ability.id}`);
+            }
+        }
+
+        //Find matching requisition for this agent's competency
+        const competency = COMPETENCY_SEED_DATA.find(c => c.id === agent.competencyId);
+        if (competency) {
+            const requisition = REQUISITION_SEED_DATA.find(r => r.id === competency.requisitionId);
+            if (requisition) {
+                await prisma.requisitionInstance.create({
+                    data: {
+                        agentId: agent.id,
+                        requisitionId: requisition.id,
+                    },
+                });
             }
         }
     }

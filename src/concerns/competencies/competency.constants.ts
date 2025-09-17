@@ -10,6 +10,7 @@ export const COMPETENCY_SEED_DATA = [
             'Give a great excuse.',
             'Ensure they will never speak of this again.'
         ],
+        requisitionId: 'pr-req',
         assessment: [
             {
                 question: 'When a coworker embarrasses themselves in public, I...',
@@ -44,7 +45,7 @@ export const COMPETENCY_SEED_DATA = [
                     'Subtlety',
                 ]
             }
-        ]
+        ],
     },
     {
         id: 'rnd',
@@ -57,6 +58,7 @@ export const COMPETENCY_SEED_DATA = [
             'Reinvent the wheel.',
             'Change someone\'s life. Permanently.'
         ],
+        requisitionId: 'rnd-req',
         assessment: [
             {
                 question: 'If at first you don\'t succeed...',
@@ -91,7 +93,7 @@ export const COMPETENCY_SEED_DATA = [
                     'Attentiveness'
                 ]
             }
-        ]
+        ],
     },
     {
         id: 'barista',
@@ -104,6 +106,7 @@ export const COMPETENCY_SEED_DATA = [
             'Show off your specialized knowledge.',
             'Get some blood flowing.'
         ],
+        requisitionId: 'barista-req',
         assessment: [
             {
                 question: 'A coworker asks me to cover their shift because of a breakup. I...',
@@ -138,7 +141,7 @@ export const COMPETENCY_SEED_DATA = [
                     'Dynamism'
                 ]
             }
-        ]
+        ],
     },
     {
         id: 'ceo',
@@ -151,6 +154,7 @@ export const COMPETENCY_SEED_DATA = [
             'Enjoy one of the finer things in life.',
             'Make a necessary sacrifice.'
         ],
+        requisitionId: 'ceo-req',
         assessment: [
             {
                 question: 'My management style is best described as...',
@@ -185,7 +189,7 @@ export const COMPETENCY_SEED_DATA = [
                     'Initiative'
                 ]
             }
-        ]
+        ],
     },
     {
         id: 'intern',
@@ -198,6 +202,7 @@ export const COMPETENCY_SEED_DATA = [
             'Embarrass yourself for others\' benefit.',
             'Bring something screeching to a halt.'
         ],
+        requisitionId: 'intern-req',
         assessment: [
             {
                 question: 'When acquiring new skills, I am a...',
@@ -232,7 +237,7 @@ export const COMPETENCY_SEED_DATA = [
                     'Presence'
                 ]
             }
-        ]
+        ],
     },
     {
         id: 'gravedigger',
@@ -245,6 +250,7 @@ export const COMPETENCY_SEED_DATA = [
             'Clean up a mess.',
             'Bury a problem.'
         ],
+        requisitionId: 'gravedigger-req',
         assessment: [
             {
                 question: 'When training new employees in my field, I emphasize...',
@@ -279,7 +285,7 @@ export const COMPETENCY_SEED_DATA = [
                     'Professionalism'
                 ]
             }
-        ]
+        ],
     },
     {
         id: 'reception',
@@ -293,6 +299,7 @@ export const COMPETENCY_SEED_DATA = [
             'Commandeer belongings.',
             'Close a door forever.'
         ],
+        requisitionId: 'reception-req',
         assessment: [
             {
                 question: 'A coworker of four years has never learned my name. I...',
@@ -327,7 +334,7 @@ export const COMPETENCY_SEED_DATA = [
                     'Attentiveness'
                 ]
             }
-        ]
+        ],
     },
     {
         id: 'hotline',
@@ -341,6 +348,7 @@ export const COMPETENCY_SEED_DATA = [
             'Take the blame for something you didn\'t do.',
             'Connect someone to an unexpected fate.'
         ],
+        requisitionId: 'hotline-req',
         assessment: [
             {
                 question: 'A customer has a problem I have been unable to fix in my own life. I...',
@@ -375,7 +383,7 @@ export const COMPETENCY_SEED_DATA = [
                     'Presence'
                 ]
             }
-        ]
+        ],
     },
     {
         id: 'clown',
@@ -388,6 +396,7 @@ export const COMPETENCY_SEED_DATA = [
             'Expose an embarrassing truth.',
             'Demand a smile.'
         ],
+        requisitionId: 'clown-req',
         assessment: [
             {
                 question: 'When I catch a thief making off with my balloon animals, I...',
@@ -422,6 +431,155 @@ export const COMPETENCY_SEED_DATA = [
                     'Professionalism'
                 ]
             }
-        ]
+        ],
+    }
+];
+
+export const REQUISITION_SEED_DATA = [
+    {
+        id: 'pr-req',
+        title: 'Printing Press',
+        description:`
+            <p>
+            This ancient, unwieldy printing press is kept
+            in an old recreation room on an unused floor in
+            your Agency headquarters. Once each mission,
+            you may use the press to print a story which is
+            then immediately published across all major local
+            publications. If you’re on the go, you can send your
+            story to the others in your department to run
+            it through the press.
+            </p>
+        `,
+        uses: 1,
+    },
+    {
+        id: 'rnd-req',
+        title: 'Rubber Duck',
+        description:`
+            <p>
+            The squeaker within this bath toy foretells great
+            possibility. Once per mission, you may describe an
+            outcome to this pocket-sized duck toy. The toy will
+            speak back: your GM will tell you the 3 steps you
+            must take to achieve that outcome. Any outcome
+            you request becomes possible, no matter how
+            improbable it seems. If you ask the Rubber Duck
+            about Anomalies directly, it will melt into a
+            useless lump instead.
+            </p>
+        `,
+        uses: 1,
+    },
+    {
+        id: 'barista-req',
+        title: 'Triple Shot Glass',
+        description:`
+            <p>
+            The Barista has a special shot glass from the Vault
+            Cafe. Once each mission, if this shot glass is used
+            when pulling espresso from any espresso machine,
+            the resulting shot can be poured into the mouth of
+            a dead body to return them to life for ten minutes.
+            Whether Anomalous or Mundane, they cannot
+            survive any amount of Harm.
+            </p>
+        `,
+        uses: 1,
+    },
+    {
+        id: 'ceo-req',
+        title: 'Expense Account',
+        description:`
+            <p>
+            This enormous accountant’s ledger is rumored
+            to contain every purchase made in the history of
+            mankind. Once each mission, you may write that
+            the Agency has acquired something specific in the
+            ledger and it becomes Agency property. You may
+            use it during this mission, but the Agency makes
+            decisions about it going forward.
+            </p>
+        `,
+        uses: 1,
+    },
+    {
+        id: 'intern-req',
+        title: 'Inherited Nametag',
+        description:`
+            <p>
+            All Interns are given an endless packet of
+            blank nametags.
+            Once each mission, you may write the name of
+            someone you met today on a nametag and apply
+            it somewhere on your person. Everyone except
+            other Agents will treat you as the named person
+            for as long as you keep the nametag on.
+            </p>
+        `,
+        uses: 1,
+    },
+    {
+        id: 'gravedigger-req',
+        title: 'Dracula\'s Coffin',
+        description:`
+            <p>
+            The coffin of the man himself lies deep in the vault,
+            buried under layers of earth. You can exhume the
+            coffin once each mission to place something inside
+            that can fit. When the coffin is returned to the
+            earth, whatever you placed inside never existed.
+            All memories of it are erased, and every effect it
+            had on the world is ascribed to other sources.
+            </p>
+        `,
+        uses: 1,
+    },
+    {
+        id: 'reception-req',
+        title: 'Moebius Circuit TV',
+        description:`
+            <p>
+            An endless room in the Vault made entirely of
+            television screens. Once each mission, you may use
+            any internet-connected device to access a feed
+            from one of the TVs in this room. The screen shows
+            you up to thirty minutes of footage of any moment
+            in time from a place you’ve visited that day.
+            </p>
+        `,
+        uses: 1,
+    },
+    {
+        id: 'hotline-req',
+        title: 'Hold Music, Vol 1',
+        description:`
+            <p>
+            You have a powerful tape player with a built-in
+            speaker and one tape of bland, cheerful music.
+            Once each mission, you can press play to
+            immediately transport you and any nearby allies
+            to a perfectly safe waiting room for up to one hour.
+            When you return, all affected can place themselves
+            anywhere in the room they left and no time has
+            passed in the world around you.
+            </p>
+        `,
+        uses: 1,
+    },
+    {
+        id: 'clown-req',
+        title: 'The Fool\'s Cap',
+        description:`
+            <p>
+            Once each mission, you may don the Fool’s Cap
+            given to all Agency Clowns. For one minute, anything
+            you do inspires laughter and enjoyment, no matter
+            the action. Following this minute, mundane viewers
+            will remember all actions you took fondly. This does
+            not protect you from later viewers of the consequences.
+            </p>
+        `,
+        uses: 1,
     }
 ];

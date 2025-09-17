@@ -95,6 +95,7 @@ model Agent {
   competencyId String?
 
   abilityInstances AbilityInstance[]
+  requisitionInstances RequisitionInstance[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -169,7 +170,49 @@ model Competency {
 
   Agent     Agent[]
 
+  requisition Requisition @relation(fields: [requisitionId], references: [id])
+  requisitionId String
+  @@unique([requisitionId])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+}
+
+model Requisition {
+  id String @id @default(uuid())
+
+  title String @default("")
+  description String @default("")
+  rentalCost Int?
+  cost Int?
+  uses Int?
+
+  competency Competency?
+
+  requisitionInstances RequisitionInstance[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RequisitionInstance {
+  id String @id @default(uuid())
+
+  currentUses Int?
+  maxUses Int?
+  notes String? @default("")
+  rented Boolean @default(false)
+  quantity Int @default(1)
+
+  requisition   Requisition   @relation(fields: [requisitionId], references: [id])
+  requisitionId String
+
+  agent   Agent   @relation(fields: [agentId], references: [id])
+  agentId String
+
+  @@unique([requisitionId, agentId])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
