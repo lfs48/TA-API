@@ -1,4 +1,4 @@
-import { AbilityInstance, Agent } from "@prisma/client";
+import { AbilityInstance, Agent, RequisitionInstance } from "@prisma/client";
 import { whitelistUserFields } from "@/util";
 import { whitelistGameFields } from "@/util";
 import { AgentWithRelations } from "concerns/agents/agent.types";
@@ -27,6 +27,9 @@ export function whitelistAgentFields(
         competencyId: agent.competencyId ?? undefined,
         abilityInstanceIds: 'abilityInstances' in agent && agent.abilityInstances
             ? agent.abilityInstances.map(instance => instance.id)
+            : [],
+        requisitionInstanceIds: 'requisitionInstances' in agent && agent.requisitionInstances
+            ? agent.requisitionInstances.map(instance => instance.id)
             : []
     };
 
@@ -54,6 +57,9 @@ export function whitelistAgentFields(
         abilityInstances: 'abilityInstances' in agent && agent.abilityInstances
             ? agent.abilityInstances.map(instance => whitelistAbilityInstanceFields(instance))
             : [],
+        requisitionInstances: 'requisitionInstances' in agent && agent.requisitionInstances
+            ? agent.requisitionInstances.map(instance => whitelistRequisitionInstanceFields(instance))
+            : []
     };
 }
 
@@ -67,6 +73,18 @@ export function whitelistAbilityInstanceFields(abilityInstance: AbilityInstance)
     };
 }
 
+export function whitelistRequisitionInstanceFields(requisitionInstance:RequisitionInstance) {
+    return {
+        id: requisitionInstance.id,
+        agentId: requisitionInstance.agentId,
+        requisitionId: requisitionInstance.requisitionId,
+        currentUses: requisitionInstance.currentUses,
+        maxUses: requisitionInstance.maxUses,
+        notes: requisitionInstance.notes,
+        rented: requisitionInstance.rented,
+        quantity: requisitionInstance.quantity
+    };
+}
 
 export function isAgentPlayer(agent:Agent, userId:string) {
     return agent.playerId === userId;

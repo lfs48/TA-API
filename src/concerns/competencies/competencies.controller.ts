@@ -7,7 +7,7 @@ export const getCompetencies = async (req: Request, res: Response) => {
     try {
         const competencies = await findAllCompetencies();
         res.status(200).json({
-            competencies: competencies.map(competency => whitelistCompetencyFields(competency))
+            competencies: competencies.map(competency => whitelistCompetencyFields(competency, true))
         });
     } catch (error) {
         console.log(error);

@@ -76,8 +76,8 @@ export const disconnectPlayerFromGame = async(gameId:string, playerId:string):Pr
 const allGameRelations = {
     agents: {
         include: {
-        player: true,
-        game: false,
+            player: true,
+            game: false,
         }
     },
     gm: true,

@@ -13,7 +13,7 @@ export const getArcs = async (req: Request, res: Response) => {
         res.status(200).json({
             anomalies: anomalies.map(anomaly => whitelistAnomalyFields(anomaly, true)),
             realities: realities.map(reality => whitelistRealityFields(reality)),
-            competencies: competencies.map(competency => whitelistCompetencyFields(competency))
+            competencies: competencies.map(competency => whitelistCompetencyFields(competency, true))
         });
     } catch (error) {
         console.log(error);

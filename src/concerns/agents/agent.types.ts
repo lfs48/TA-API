@@ -21,7 +21,7 @@ export type AgentWithRelations = Agent & {
     reality?: Reality;
     competency?: Competency;
     abilityInstances?: AbilityInstance[];
-    requisitionInstances: RequisitionInstance[];
+    requisitionInstances?: RequisitionInstance[];
 }
 
 export type AbilityInstanceWithRelations = AbilityInstance & {

@@ -265,4 +265,5 @@ const allAgentRelations = {
   reality: true,
   competency: true,
   abilityInstances: true,
+  requisitionInstances: true,
 }
