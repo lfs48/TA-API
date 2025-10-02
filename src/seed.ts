@@ -406,6 +406,8 @@ async function main() {
                     data: {
                         agentId: agent.id,
                         requisitionId: requisition.id,
+                        currentUses: requisition.uses,
+                        maxUses: requisition.uses,
                     },
                 });
             }
