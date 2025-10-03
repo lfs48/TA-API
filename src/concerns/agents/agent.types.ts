@@ -6,6 +6,7 @@ import {
     Competency, 
     Game, 
     Reality,
+    Requisition,
     RequisitionInstance,
     User 
 } from "@prisma/client";
@@ -46,6 +47,21 @@ export interface AgentData {
 export interface AbilityInstanceData {
     practiced?: boolean;
     answers?: any;
+}
+
+export type RequisitionInstanceWithRelations = RequisitionInstance & {
+    requisition?: Requisition;
+    agent?: Agent & {
+        player?: User;
+    };
+}
+
+export interface RequisitionInstanceData {
+    currentUses?: number;
+    maxUses?: number;
+    notes?: string;
+    rented?: boolean;
+    quantity?: number;
 }
 
 export type AgentQualities = typeof DEFAULT_AGENT_QUALITIES;

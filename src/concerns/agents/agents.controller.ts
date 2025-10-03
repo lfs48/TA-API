@@ -12,10 +12,12 @@ import {
     resetAgentCurrencyCurrent,
     resetAgent,
     findAbilityInstanceById,
-    updateAbilityInstance
+    updateAbilityInstance,
+    findRequisitionInstanceById,
+    updateRequisitionInstance
 } from "./agent.service";
 import { getIdFromJWT } from "@/util";
-import { whitelistAgentFields, whitelistAbilityInstanceFields } from "./agent.util";
+import { whitelistAgentFields, whitelistAbilityInstanceFields, whitelistRequisitionInstanceFields } from "./agent.util";
 
 // GET /agent/user endpoint controller (fetch all agents for the current user)
 export const getAgentById = async (req: Request, res: Response) => {
@@ -334,6 +336,39 @@ export const patchAbilityInstance = async (req: Request, res: Response) => {
     }
 };
 
+// PATCH /requisition-instance/:id endpoint controller
+export const patchRequisitionInstance = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const userId = getIdFromJWT(req);
+        const requisitionInstanceData = req.body.requisitionInstance;
+
+        // Get existing requisition instance to verify ownership
+        const existingRequisitionInstance = await findRequisitionInstanceById(id);
+        if (!existingRequisitionInstance) {
+            res.status(404).json({ messages: ['Requisition instance not found'] });
+            return;
+        }
+
+        // Check if user owns the agent associated with this requisition instance
+        if (existingRequisitionInstance.agent.playerId !== userId) {
+            res.status(403).json({ messages: ['Not your requisition instance'] });
+            return;
+        }
+
+        const updatedRequisitionInstance = await updateRequisitionInstance(id, requisitionInstanceData);
+        if (!updatedRequisitionInstance) {
+            res.status(404).json({ messages: ['Requisition instance not found'] });
+            return;
+        }
+
+        res.status(200).json({ requisitionInstance: whitelistRequisitionInstanceFields(updatedRequisitionInstance) });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ messages: ["Internal Server Error"] });
+    }
+};
+
 export default {
     getAgentById,
     postAgent,
@@ -347,4 +382,5 @@ export default {
     patchAgentCurrencyResetCurrent,
     patchAgentReset,
     patchAbilityInstance,
+    patchRequisitionInstance,
 };

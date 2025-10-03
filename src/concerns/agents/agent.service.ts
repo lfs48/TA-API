@@ -254,6 +254,32 @@ const abilityInstanceRelations = {
   },
 };
 
+// Find requisition instance by ID with relations
+export const findRequisitionInstanceById = async (id: string) => {
+  return await prisma.requisitionInstance.findUnique({
+    where: { id },
+    include: requisitionInstanceRelations,
+  });
+};
+
+// Update requisition instance
+export const updateRequisitionInstance = async (id: string, requisitionInstanceData: any) => {
+  return await prisma.requisitionInstance.update({
+    where: { id },
+    data: requisitionInstanceData,
+    include: requisitionInstanceRelations,
+  });
+};
+
+const requisitionInstanceRelations = {
+  requisition: true,
+  agent: {
+    include: {
+      player: true,
+    }
+  },
+};
+
 const allAgentRelations = {
   player: true,
   game: true,

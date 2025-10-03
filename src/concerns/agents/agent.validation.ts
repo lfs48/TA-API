@@ -111,3 +111,16 @@ export const patchAbilityInstanceValidation = z.object({
         })
     })
 });
+
+// Validation for requisition instance endpoint
+export const patchRequisitionInstanceValidation = z.object({
+    body: z.object({
+        requisitionInstance: z.object({
+            currentUses: z.number().int().min(0).optional(),
+            maxUses: z.number().int().min(0).optional(),
+            notes: z.string().optional(),
+            rented: z.boolean().optional(),
+            quantity: z.number().int().min(1).optional()
+        })
+    })
+});
