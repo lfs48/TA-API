@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 
 import { ABILITY_SEED_DATA } from "./concerns/anomalies/anomaly.constants";
 import { COMPETENCY_SEED_DATA, REQUISITION_SEED_DATA } from "./concerns/competencies/competency.constants";
+import { REALITY_SEED_DATA } from "./concerns/realities/reality.constants";
 
 const prisma = new PrismaClient();
 
@@ -144,45 +145,6 @@ const anomalyData = [
     }
 ];
 
-const realityData = [
-    {
-        id: 'caretaker',
-        name: 'Caretaker',
-    },
-    {
-        id: 'overbooked',
-        name: 'Overbooked',
-    },
-    {
-        id: 'pursued',
-        name: 'Pursued',
-    },
-    {
-        id: 'star',
-        name: 'Star',
-    },
-    {
-        id: 'struggling',
-        name: 'Struggling',
-    },
-    {
-        id: 'newborn',
-        name: 'Newborn',
-    },
-    {
-        id: 'romantic',
-        name: 'Romantic',
-    },
-    {
-        id: 'backbone',
-        name: 'Backbone',
-    },
-    {
-        id: 'creature',
-        name: 'Creature',
-    }
-];
-
 const agentData = [
     {
         id: 'agent1',
@@ -300,13 +262,12 @@ async function main() {
 
     // Seed realities
     await Promise.all(
-        realityData.map(async (reality) => {
+        REALITY_SEED_DATA.map(async (reality) => {
             await prisma.reality.upsert({
                 where: { id: reality.id },
                 update: {},
                 create: {
-                    id: reality.id,
-                    name: reality.name,
+                    ...reality
                 },
             });
         })
@@ -373,7 +334,7 @@ async function main() {
         })
     );
 
-    // Seed ability instances for each agent
+    // Seed agent abilities, relationships, and requisitions
     for (const agent of agentData) {
         // Find abilities that match this agent's anomaly
         const matchingAbilities = ABILITY_SEED_DATA.filter(
@@ -397,19 +358,58 @@ async function main() {
             }
         }
 
+        // Find relationship matrix for agent's reality
+        const reality = await prisma.reality.findUnique({
+            where: { id: agent.realityId },
+        });
+        const matrix = reality?.matrix ?? [];
+
+        // Create relationship entries based on the matrix
+        for (const relation of matrix) {
+            await prisma.relationship.create({
+                data: {
+                    agentId: agent.id,
+                    name: '',
+                    description: relation,
+                },
+            });
+        }
+
+        // Create ability instances for each matching ability
+        for (const ability of matchingAbilities) {
+            try {
+                await prisma.abilityInstance.create({
+                    data: {
+                        agentId: agent.id,
+                        abilityId: ability.id,
+                        practiced: false,
+                        answers: {},
+                    },
+                });
+            } catch (error) {
+                // Skip if already exists
+                console.log(`Ability instance already exists for agent ${agent.id} and ability ${ability.id}`);
+            }
+        }
+
         //Find matching requisition for this agent's competency
         const competency = COMPETENCY_SEED_DATA.find(c => c.id === agent.competencyId);
         if (competency) {
             const requisition = REQUISITION_SEED_DATA.find(r => r.id === competency.requisitionId);
             if (requisition) {
-                await prisma.requisitionInstance.create({
-                    data: {
-                        agentId: agent.id,
-                        requisitionId: requisition.id,
-                        currentUses: requisition.uses,
-                        maxUses: requisition.uses,
-                    },
-                });
+                try {
+                    await prisma.requisitionInstance.create({
+                        data: {
+                            agentId: agent.id,
+                            requisitionId: requisition.id,
+                            currentUses: requisition.uses,
+                            maxUses: requisition.uses,
+                        },
+                    });
+                } catch (error) {
+                    // Skip if already exists
+                    console.log(`Requisition instance already exists for agent ${agent.id} and requisition ${requisition.id}`);
+                }
             }
         }
     }

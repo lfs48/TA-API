@@ -78,6 +78,7 @@ model Agent {
   directive Int @default(0)
   sanctioned Boolean[] @default([false, false, false])
   assessment Int[] @default([0, 0, 0])
+  trackFilled Int @default(0)
 
   game   Game   @relation(fields: [gameId], references: [id])
   gameId String
@@ -96,6 +97,7 @@ model Agent {
 
   abilityInstances AbilityInstance[]
   requisitionInstances RequisitionInstance[]
+  relationships Relationship[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -152,12 +154,48 @@ model Reality {
   id String @id @default(uuid())
 
   name String @default("")
+  trigger Json @default("{}")
+  release Json @default("{}")
+  track Json @default("{}")
+  matrix String[] @default([])
 
-  Agent     Agent[]
+  agents     Agent[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+}
+
+model Relationship {
+  id String @id @default(uuid())
+
+  name String @default("")
+  description String @default("")
+  connection Int @default(0)
+  active Boolean @default(false)
+  uses Int?
+
+  agentId String
+  agent   Agent   @relation(fields: [agentId], references: [id])
+
+  connectionBonusId String?
+  connectionBonus   ConnectionBonus? @relation(fields: [connectionBonusId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ConnectionBonus {
+  id String @id @default(uuid())
+
+  title String @default("")
+  description String @default("")
+  maxUses Int?
+
+  relationships Relationship[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Competency {

@@ -1,4 +1,4 @@
-import { AbilityInstance, Agent, RequisitionInstance } from "@prisma/client";
+import { AbilityInstance, Agent, Relationship, RequisitionInstance } from "@prisma/client";
 import { whitelistUserFields } from "@/util";
 import { whitelistGameFields } from "@/util";
 import { AgentWithRelations } from "concerns/agents/agent.types";
@@ -30,7 +30,10 @@ export function whitelistAgentFields(
             : [],
         requisitionInstanceIds: 'requisitionInstances' in agent && agent.requisitionInstances
             ? agent.requisitionInstances.map(instance => instance.id)
-            : []
+            : [],
+        relationshipIds: 'relationships' in agent && agent.relationships
+            ? agent.relationships.map(relationship => relationship.id)
+            : [],
     };
 
     if (!includeRelations) {
@@ -59,7 +62,10 @@ export function whitelistAgentFields(
             : [],
         requisitionInstances: 'requisitionInstances' in agent && agent.requisitionInstances
             ? agent.requisitionInstances.map(instance => whitelistRequisitionInstanceFields(instance))
-            : []
+            : [],
+        relationships: 'relationships' in agent && agent.relationships
+            ? agent.relationships.map(relationship => whitelistRelationshipFields(relationship))
+            : [],
     };
 }
 
@@ -70,6 +76,17 @@ export function whitelistAbilityInstanceFields(abilityInstance: AbilityInstance)
         agentId: abilityInstance.agentId,
         practiced: abilityInstance.practiced,
         answers: abilityInstance.answers,
+    };
+}
+
+export function whitelistRelationshipFields(relationship: Relationship) {
+    return {
+        id: relationship.id,
+        name: relationship.name,
+        description: relationship.description,
+        connection: relationship.connection,
+        active: relationship.active,
+        uses: relationship.uses,
     };
 }
 

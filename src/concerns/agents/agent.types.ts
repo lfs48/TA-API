@@ -6,6 +6,7 @@ import {
     Competency, 
     Game, 
     Reality,
+    Relationship,
     Requisition,
     RequisitionInstance,
     User 
@@ -23,6 +24,7 @@ export type AgentWithRelations = Agent & {
     competency?: Competency;
     abilityInstances?: AbilityInstance[];
     requisitionInstances?: RequisitionInstance[];
+    relationships?: Relationship[];
 }
 
 export type AbilityInstanceWithRelations = AbilityInstance & {
