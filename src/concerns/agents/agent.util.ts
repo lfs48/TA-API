@@ -1,7 +1,7 @@
 import { AbilityInstance, Agent, Relationship, RequisitionInstance } from "@prisma/client";
 import { whitelistUserFields } from "@/util";
 import { whitelistGameFields } from "@/util";
-import { AgentWithRelations } from "concerns/agents/agent.types";
+import { AgentWithRelations } from "@/concerns/agents/agent.types";
 import { 
     whitelistAnomalyFields, 
     whitelistCompetencyFields, 
@@ -87,6 +87,7 @@ export function whitelistRelationshipFields(relationship: Relationship) {
         connection: relationship.connection,
         active: relationship.active,
         uses: relationship.uses,
+        playerId: relationship.playerId
     };
 }
 

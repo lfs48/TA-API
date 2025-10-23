@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 
 import { ABILITY_SEED_DATA } from "./concerns/anomalies/anomaly.constants";
 import { COMPETENCY_SEED_DATA, REQUISITION_SEED_DATA } from "./concerns/competencies/competency.constants";
-import { REALITY_SEED_DATA } from "./concerns/realities/reality.constants";
+import { CONNECTION_BONUS_SEED_DATA, REALITY_SEED_DATA } from "./concerns/realities/reality.constants";
 
 const prisma = new PrismaClient();
 
@@ -310,6 +310,19 @@ async function main() {
                     title: ability.title,
                     data: ability.data,
                     anomalyId: ability.anomalyId,
+                },
+            });
+        })
+    );
+
+    //Seed connection bonuses
+    await Promise.all(
+        CONNECTION_BONUS_SEED_DATA.map(async (bonus) => {
+            await prisma.connectionBonus.upsert({
+                where: { id: bonus.id },
+                update: {},
+                create: {
+                    ...bonus,
                 },
             });
         })
