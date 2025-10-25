@@ -294,3 +294,6 @@ const allAgentRelations = {
   requisitionInstances: true,
   relationships: true,
 }
+
+// Re-export relationship services
+export { findRelationshipById, updateRelationship } from './relationships/relationship.service';

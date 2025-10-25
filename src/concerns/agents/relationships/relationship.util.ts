@@ -13,7 +13,8 @@ export function whitelistRelationshipFields(
         connection: relationship.connection,
         active: relationship.active,
         uses: relationship.uses,
-        playerId: relationship.playerId
+        playerId: relationship.playerId,
+        connectionBonusId: relationship.connectionBonusId,
     };
 
     if (!includeRelations) {
@@ -28,8 +29,8 @@ export function whitelistRelationshipFields(
         player: 'player' in relationship && relationship.player
             ? whitelistUserFields(relationship.player, false)
             : undefined,
-        bonus: 'bonus' in relationship && relationship.bonus
-            ? relationship.bonus
+        connectionBonus: 'connectionBonus' in relationship && relationship.connectionBonus
+            ? relationship.connectionBonus
             : undefined,
     }
 }
