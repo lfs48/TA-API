@@ -7,6 +7,7 @@ import {
     whitelistCompetencyFields, 
     whitelistRealityFields 
 } from "@/util";
+import { whitelistRelationshipFields } from "./relationships/relationship.util";
 
 export function whitelistAgentFields(
     agent: AgentWithRelations | Agent,
@@ -76,18 +77,6 @@ export function whitelistAbilityInstanceFields(abilityInstance: AbilityInstance)
         agentId: abilityInstance.agentId,
         practiced: abilityInstance.practiced,
         answers: abilityInstance.answers,
-    };
-}
-
-export function whitelistRelationshipFields(relationship: Relationship) {
-    return {
-        id: relationship.id,
-        name: relationship.name,
-        description: relationship.description,
-        connection: relationship.connection,
-        active: relationship.active,
-        uses: relationship.uses,
-        playerId: relationship.playerId
     };
 }
 

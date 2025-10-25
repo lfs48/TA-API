@@ -3,7 +3,8 @@ import bcrypt from 'bcryptjs';
 
 import { ABILITY_SEED_DATA } from "./concerns/anomalies/anomaly.constants";
 import { COMPETENCY_SEED_DATA, REQUISITION_SEED_DATA } from "./concerns/competencies/competency.constants";
-import { CONNECTION_BONUS_SEED_DATA, REALITY_SEED_DATA } from "./concerns/realities/reality.constants";
+import { REALITY_SEED_DATA } from "./concerns/realities/reality.constants";
+import { CONNECTION_BONUS_SEED_DATA} from "./concerns/connection-bonuses/connection-bonus.constants";
 
 const prisma = new PrismaClient();
 
